@@ -7,6 +7,10 @@ const routes: Routes = [{
     component: HomeComponent
   },
   {
+    path: 'contacts',
+    loadChildren: './pages/contacts-component/contacts.module#ContactsModule'
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
