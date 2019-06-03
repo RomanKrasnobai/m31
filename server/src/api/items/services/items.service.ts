@@ -8,11 +8,17 @@ import { ItemDto } from '../dto/item.dto';
 @Injectable()
 export class ItemsService {
 
+  protected readonly collectionName: string = 'items';
+
+  protected get collection() {
+    return this.firebaseSvc.db.collection(this.collectionName);
+  }
+
   constructor(private firebaseSvc: FirebaseService) {}
 
   findAll(): Observable<ItemDto[]> {
     return from(
-      this.firebaseSvc.db.collection('items').get(),
+      this.collection.get(),
     ).pipe(
         map(r => r.docs.map(x => x.data() as ItemDto),
       ),
@@ -21,7 +27,7 @@ export class ItemsService {
 
   findById(id: string): Observable<ItemDto> {
     return from(
-      this.firebaseSvc.db.collection('items').doc(id).get(),
+      this.collection.doc(id).get(),
     ).pipe(
       map(r => r.data() as ItemDto),
     );
@@ -30,19 +36,19 @@ export class ItemsService {
   create(dto: ItemDto): Observable<string> {
     const id = Guid.create().toString();
     return from(
-      this.firebaseSvc.db.collection('items').doc(id).set(dto),
+      this.collection.doc(id).set(dto),
     ).pipe(map(x => id));
   }
 
   update(id: string, dto: ItemDto): Observable<ItemDto> {
     return from(
-      this.firebaseSvc.db.collection('items').doc(id).set(dto),
+      this.collection.doc(id).set(dto),
     ).pipe(map(x => dto));
   }
 
   delete(id: string): Observable<any> {
     return from(
-      this.firebaseSvc.db.collection('items').doc(id).delete(),
+      this.collection.doc(id).delete(),
     );
   }
 }

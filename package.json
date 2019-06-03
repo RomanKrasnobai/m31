@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "start": "cd start && npm run start",
+    "start:dev": "cd start && npm run start:dev",
     "build": "cd server && npm run build"
   },
-  "private": true
+  "private": true,
+  "dependencies": {}
 }
