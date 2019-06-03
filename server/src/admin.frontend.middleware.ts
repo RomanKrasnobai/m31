@@ -21,7 +21,9 @@ export class AdminFrontendMiddleware implements NestMiddleware {
 
   use(req: Request, res: Response, next: Function) {
     const { url } = req;
-    if (allowedExt.filter(ext => url.indexOf(ext) > 0).length > 0) {
+    if (url.indexOf('api') === 0) {
+      next();
+    } else if (allowedExt.filter(ext => url.indexOf(ext) > 0).length > 0) {
       // it has a file extension --> resolve the file
       res.sendFile(resolvePath(url));
     } else {
