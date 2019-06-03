@@ -2,11 +2,13 @@ import { Module, MiddlewareConsumer } from '@nestjs/common';
 import { Routes, RouterModule, Route } from 'nest-router';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ItemsModule } from './items/items.module';
-import { OrdersModule } from './orders/orders.module';
+import { ItemsModule } from './api/items/items.module';
+import { OrdersModule } from './api/orders/orders.module';
 import { AdminFrontendMiddleware } from './admin.frontend.middleware';
-import { EShopFrontendMiddleware } from './e-shop.frontend.middleware';
+// import { EShopFrontendMiddleware } from './e-shop.frontend.middleware';
 import { NovaPoshtaModule } from './nova-poshta/nova-poshta.module';
+import { FirebaseModule } from './firebase/firebase.module';
+
 
 const modules = [
   ItemsModule,
@@ -23,6 +25,7 @@ const routes: Routes = modules.map(module => ({
   imports: [
     RouterModule.forRoutes(routes),
     ...modules,
+    FirebaseModule,
   ],
   controllers: [AppController],
   providers: [AppService],
