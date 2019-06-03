@@ -30,7 +30,9 @@
               "src/styles.sass"
             ],
             "scripts": [],
-            "es5BrowserSupport": true
+            "es5BrowserSupport": true,
+            "baseHref": "",
+            "deployUrl": "admin/"
           },
           "configurations": {
             "production": {
