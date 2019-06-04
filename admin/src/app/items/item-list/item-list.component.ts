@@ -16,6 +16,7 @@ export class ItemListComponent implements OnInit {
 
   dataSource: MatTableDataSource<Item>;
   saveButtonHidden: boolean;
+  displayedColumns: Array<string> = ['name', 'category', 'price', 'menu'];
 
   constructor(
     private router: Router,
@@ -44,7 +45,7 @@ export class ItemListComponent implements OnInit {
   }
 
   remove(element: any) {
-    this.itemsService.delete(element.id).subscribe(() => null);
+    this.itemsService.delete(element.id).subscribe(() => this.loadData());
   }
 
 }

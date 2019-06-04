@@ -7,5 +7,55 @@
 </mat-toolbar>
 <div style="padding-left: 24px; font-size: x-large">
   <div class="mat-elevation-z8">
+
+    <mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'items.caption.name' | translate }}</mat-header-cell>
+        <mat-cell *matCellDef="let element" [attr.data-label]="'items.caption.name' | translate"
+          (dblclick)="edit(element)">
+          <span>{{ element.name }}</span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="category">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'items.caption.category' | translate }}</mat-header-cell>
+        <mat-cell *matCellDef="let element" [attr.data-label]="'items.caption.category' | translate"
+          (dblclick)="edit(element)">
+          <span>{{ element.category }}</span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="price">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'items.caption.price' | translate }}</mat-header-cell>
+        <mat-cell *matCellDef="let element" [attr.data-label]="'items.caption.price' | translate"
+          (dblclick)="edit(element)">
+          <span>{{ element.price }}</span>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Menu Column -->
+      <ng-container matColumnDef="menu">
+        <mat-header-cell *matHeaderCellDef>{{ 'common.caption.actions' | translate }}</mat-header-cell>
+        <mat-cell *matCellDef="let element" [attr.data-label]="'common.caption.actions' | translate">
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="edit(element)">
+              <mat-icon>edit</mat-icon>
+              <span>{{ 'common.menu.edit' | translate }}</span>
+            </button>
+            <button mat-menu-item (click)="remove(element)">
+              <mat-icon>delete</mat-icon>
+              <span>{{ 'common.menu.remove' | translate }}</span>
+            </button>
+          </mat-menu>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+    </mat-table>
   </div>
 </div>

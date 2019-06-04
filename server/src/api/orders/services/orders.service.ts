@@ -21,7 +21,7 @@ export class OrdersService {
     return from(
       this.collection.get(),
     ).pipe(
-      map(r => r.docs.map(x => x.data() as OrderDto),
+      map(r => r.docs.map(x => ({ id: x.id, ...x.data() }) as OrderDto),
       ),
     );
   }
@@ -30,21 +30,21 @@ export class OrdersService {
     return from(
       this.collection.doc(id).get(),
     ).pipe(
-      map(r => r.data() as OrderDto),
+      map(r => ({ id, ...r.data() } as OrderDto)),
     );
   }
 
-  create(dto: OrderDto): Observable<string> {
+  create(dto: OrderDto): Observable<OrderDto> {
     const id = Guid.create().toString();
     return from(
       this.collection.doc(id).set(dto),
-    ).pipe(map(x => id));
+    ).pipe(map(x => ({ id, ...dto })));
   }
 
   update(id: string, dto: OrderDto): Observable<OrderDto> {
     return from(
       this.collection.doc(id).set(dto),
-    ).pipe(map(x => dto));
+    ).pipe(map(x => ({ id, ...dto })));
   }
 
   delete(id: string): Observable<any> {

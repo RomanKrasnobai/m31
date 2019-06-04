@@ -19,8 +19,8 @@ export class ItemsService {
     return this.http.get<Item>(`api/items/${id}`);
   }
 
-  create(dto: Item): Observable<string> {
-    return this.http.post<string>('api/items', dto);
+  create(dto: Item): Observable<Item> {
+    return this.http.post<Item>('api/items', dto);
   }
 
   update(id: string, dto: Item): Observable<Item> {

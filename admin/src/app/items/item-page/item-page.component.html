@@ -4,7 +4,7 @@
       <span title>{{ 'items.page.title' | translate }}</span>
     </mat-card-title>
     <mat-card-subtitle>
-      <span title>{{ id ? 'common.title.edit' : 'common.title.add' | translate }}</span>
+      <span title>{{ (id ? 'common.title.edit' : 'common.title.add') | translate }}</span>
     </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
@@ -25,7 +25,7 @@
 
         <mat-grid-tile>
           <mat-form-field>
-            <input matInput [placeholder]="'items.caption.price' | translate" formControlName="price" />
+            <input matInput type=number [placeholder]="'items.caption.price' | translate" formControlName="price" />
           </mat-form-field>
         </mat-grid-tile>
 

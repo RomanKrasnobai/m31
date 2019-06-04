@@ -20,7 +20,7 @@ export class ItemsService {
     return from(
       this.collection.get(),
     ).pipe(
-        map(r => r.docs.map(x => x.data() as ItemDto),
+        map(r => r.docs.map(x => ({id: x.id, ...x.data()}) as ItemDto),
       ),
     );
   }
@@ -29,21 +29,21 @@ export class ItemsService {
     return from(
       this.collection.doc(id).get(),
     ).pipe(
-      map(r => r.data() as ItemDto),
+      map(r => ({id, ...r.data()} as ItemDto)),
     );
   }
 
-  create(dto: ItemDto): Observable<string> {
+  create(dto: ItemDto): Observable<ItemDto> {
     const id = Guid.create().toString();
     return from(
       this.collection.doc(id).set(dto),
-    ).pipe(map(x => id));
+    ).pipe(map(x => ({id, ...dto})));
   }
 
   update(id: string, dto: ItemDto): Observable<ItemDto> {
     return from(
       this.collection.doc(id).set(dto),
-    ).pipe(map(x => dto));
+    ).pipe(map(x => ({id, ...dto})));
   }
 
   delete(id: string): Observable<any> {

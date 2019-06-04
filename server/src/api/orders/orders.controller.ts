@@ -22,12 +22,12 @@ export class OrdersController {
   }
 
   @Post()
-  create(@Body() dto: OrderDto): Observable<string> {
+  create(@Body() dto: OrderDto): Observable<OrderDto> {
     return this.orderSvc.create(dto);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: OrderDto): Observable<any> {
+  update(@Param('id') id: string, @Body() dto: OrderDto): Observable<OrderDto> {
     return this.orderSvc.update(id, dto);
   }
 

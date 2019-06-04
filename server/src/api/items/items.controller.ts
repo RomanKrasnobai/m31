@@ -21,12 +21,12 @@ export class ItemsController {
   }
 
   @Post()
-  create(@Body() dto: ItemDto): Observable<string> {
+  create(@Body() dto: ItemDto): Observable<ItemDto> {
     return this.itemSvc.create(dto);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: ItemDto): Observable<any> {
+  update(@Param('id') id: string, @Body() dto: ItemDto): Observable<ItemDto> {
     return this.itemSvc.update(id, dto);
   }
 

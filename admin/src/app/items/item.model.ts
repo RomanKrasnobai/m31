@@ -3,6 +3,7 @@ export enum ItemCategory {
 }
 
 export class Item {
+  id: string;
   name: string;
   category: ItemCategory;
   price: number;

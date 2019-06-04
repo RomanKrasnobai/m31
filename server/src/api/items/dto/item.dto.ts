@@ -5,6 +5,8 @@ export enum ItemCategory {
 }
 
 export class ItemDto {
+  @ApiModelPropertyOptional()
+  readonly id: string;
   @ApiModelProperty()
   readonly name: string;
   @ApiModelProperty()

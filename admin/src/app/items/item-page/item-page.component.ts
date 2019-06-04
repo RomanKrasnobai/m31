@@ -56,7 +56,7 @@ export class ItemPageComponent implements OnInit {
   }
 
   onBackButtonClick() {
-    this.router.navigate(['../'], { relativeTo: this.route });
+    this.router.navigate(['.'], { relativeTo: this.route.parent });
   }
 
   onSaveButtonClick() {
@@ -90,12 +90,12 @@ export class ItemPageComponent implements OnInit {
     const query = this.id
       ? this.itemsService.update(this.id, dto)
       : this.itemsService.create(dto).pipe(
-        tap(id => {
-          this.router.navigate(['edit', id], { relativeTo: this.route.parent });
+        tap(item => {
+          this.router.navigate(['edit', item.id], { relativeTo: this.route.parent });
         })
       );
     query.subscribe(
-      () => this.saveButtonDisabled = true
+      () => this.saveButtonDisabled = false
     );
   }
 

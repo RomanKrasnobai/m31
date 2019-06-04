@@ -19,7 +19,7 @@ export class OrdersService {
     return this.http.get<Order>('api/orders');
   }
 
-  create(dto: Order): Observable<string> {
+  create(dto: Order): Observable<Order> {
     return this.http.post<string>('api/orders', dto);
   }
 
