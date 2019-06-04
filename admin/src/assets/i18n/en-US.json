@@ -1,5 +1,15 @@
 {
   "common.app-title": "M31 Studio",
+  "common.title.edit": "Edit",
+  "common.title.add": "Add",
   "common.menu.items": "Items",
-  "common.menu.orders": "Orders"
+  "common.menu.orders": "Orders",
+  "common.new-button": "New",
+  "common.back-button": "Back",
+  "common.save-button": "Save",
+  "items.list.title": "Items",
+  "items.page.title": "Item",
+  "items.caption.name": "Name",
+  "items.caption.category": "Category",
+  "items.caption.price": "Price"
 }

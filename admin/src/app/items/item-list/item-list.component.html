@@ -1,3 +1,11 @@
-<p>
-  item-list works!
-</p>
+<mat-toolbar>
+  <mat-toolbar-row>
+    <span class="title">{{ 'items.list.title' | translate }}</span>
+    <button *ngIf="!saveButtonHidden" mat-raised-button color="primary"
+      (click)="onNewButtonClick()">{{ 'common.new-button' | translate }}</button>
+  </mat-toolbar-row>
+</mat-toolbar>
+<div style="padding-left: 24px; font-size: x-large">
+  <div class="mat-elevation-z8">
+  </div>
+</div>
