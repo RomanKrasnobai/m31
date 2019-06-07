@@ -91,11 +91,14 @@ export class ImageControlComponent implements OnInit, ControlValueAccessor {
 
   async addImageSource(event: Event) {
     const fileInput = event.target as HTMLInputElement;
-    const file = fileInput.files && fileInput.files[0];
-    if (file) {
-      const imgSrc = await this.getBase64(file);
-      this.images.push(imgSrc);
-      this.setValue(this.images.length - 1);
+    const files = fileInput.files;
+    if (files && files.length) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files.item(i);
+        const imgSrc = await this.getBase64(file);
+        this.images.push(imgSrc);
+        this.setValue(this.images.length - 1);
+      }
       fileInput.value = null;
     }
   }

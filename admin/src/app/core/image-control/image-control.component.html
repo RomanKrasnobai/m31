@@ -4,7 +4,7 @@
   </div>
   <div *ngIf="!disabled" class="actions-wrapper">
     <mat-icon (click)="addImage()">add_photo_alternate</mat-icon>
-    <input #addImgFile name="addImgFile" type="file" accept="image/*" (change)="addImageSource($event)" hidden>
+    <input #addImgFile name="addImgFile" type="file" accept="image/*" (change)="addImageSource($event)" multiple hidden>
     <mat-icon *ngIf="value" (click)="selectImage()">image_search</mat-icon>
     <input #updateImgFile name="updateImgFile" type="file" accept="image/*" (change)="updateImageSource($event)" hidden>
     <mat-icon *ngIf="value" (click)="removeImage()">delete</mat-icon>
