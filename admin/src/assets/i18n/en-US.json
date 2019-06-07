@@ -14,5 +14,6 @@
   "items.page.title": "Item",
   "items.caption.name": "Name",
   "items.caption.category": "Category",
-  "items.caption.price": "Price"
+  "items.caption.price": "Price",
+  "items.caption.description": "Description"
 }

@@ -30,9 +30,10 @@ import {
 } from '@angular/material';
 import { CoreTranslateService } from './translate.service';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { ImageControlComponent } from './image-control/image-control.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [ImageControlComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -85,6 +86,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
     MatDialogModule,
     MatExpansionModule,
     MatSortModule,
+    ImageControlComponent,
   ],
   providers: [
     { provide: TranslateService, useClass: CoreTranslateService }

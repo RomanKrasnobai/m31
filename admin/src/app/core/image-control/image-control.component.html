@@ -1,0 +1,17 @@
+<div class="img-wrapper">
+  <div class="image-view">
+    <img [src]="imageSrc" />
+  </div>
+  <div *ngIf="!disabled" class="actions-wrapper">
+    <mat-icon (click)="addImage()">add_photo_alternate</mat-icon>
+    <input #addImgFile name="addImgFile" type="file" accept="image/*" (change)="addImageSource($event)" hidden>
+    <mat-icon *ngIf="value" (click)="selectImage()">image_search</mat-icon>
+    <input #updateImgFile name="updateImgFile" type="file" accept="image/*" (change)="updateImageSource($event)" hidden>
+    <mat-icon *ngIf="value" (click)="removeImage()">delete</mat-icon>
+    <mat-icon *ngIf="images.length > 0" (click)="prevImage()">chevron_left</mat-icon>
+    <mat-icon *ngIf="images.length > 0" (click)="nextImage()">chevron_right</mat-icon>
+  </div>
+</div>
+<div class="images-preview">
+  <img *ngFor="let imgSrc of images; let i = index" [src]="imgSrc" [class.active]="i === currentIndex" (click)="currentIndex=i">
+</div>

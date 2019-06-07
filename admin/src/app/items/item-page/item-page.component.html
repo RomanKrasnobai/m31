@@ -9,23 +9,33 @@
   </mat-card-header>
   <mat-card-content>
     <form [formGroup]="form">
-      <mat-grid-list [cols]="isMobile ? 1 : 3" rowHeight="64px">
+      <mat-grid-list [cols]="getCollSpan(3)" rowHeight="64px">
 
-        <mat-grid-tile>
+        <mat-grid-tile rowspan="3" colspan="1" >
+          <app-image-control formControlName="image"></app-image-control>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="getCollSpan(2)">
           <mat-form-field>
             <input matInput [placeholder]="'items.caption.name' | translate" formControlName="name" />
           </mat-form-field>
         </mat-grid-tile>
 
-        <mat-grid-tile>
+        <mat-grid-tile [colspan]="getCollSpan(2)">
           <mat-form-field>
             <input matInput [placeholder]="'items.caption.category' | translate" formControlName="category" />
           </mat-form-field>
         </mat-grid-tile>
 
-        <mat-grid-tile>
+        <mat-grid-tile [colspan]="getCollSpan(2)">
           <mat-form-field>
             <input matInput type=number [placeholder]="'items.caption.price' | translate" formControlName="price" />
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="getCollSpan(3)" rowspan="4">
+          <mat-form-field style="height:100%;margin-top:1rem">
+            <textarea [ngStyle]="textareaStyle" matInput [placeholder]="'items.caption.description' | translate" formControlName="description"></textarea>
           </mat-form-field>
         </mat-grid-tile>
 

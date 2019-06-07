@@ -16,6 +16,11 @@ export class ItemPageComponent implements OnInit {
 
   saveButtonDisabled: boolean;
 
+  textareaStyle = {
+    'resize': 'none',
+    'height': '14rem',
+  };
+
   public form: FormGroup;
   public id: string;
 
@@ -53,6 +58,10 @@ export class ItemPageComponent implements OnInit {
         this.loadEntity(id);
       }
     });
+  }
+
+  getCollSpan(value: number): number {
+    return this.isMobile ? 1 : value;
   }
 
   onBackButtonClick() {
@@ -95,7 +104,8 @@ export class ItemPageComponent implements OnInit {
         })
       );
     query.subscribe(
-      () => this.saveButtonDisabled = false
+      () => this.saveButtonDisabled = false,
+      () => this.saveButtonDisabled = false,
     );
   }
 
