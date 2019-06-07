@@ -41,7 +41,7 @@ export class ImageControlComponent implements OnInit, ControlValueAccessor {
   }
 
   writeValue(obj: any): void {
-    this.images = Array.isArray(obj) ? obj : [obj];
+    this.images = obj ? Array.isArray(obj) ? obj : [obj] : [];
     this.currentIndex = 0;
   }
   registerOnChange(fn: any): void {

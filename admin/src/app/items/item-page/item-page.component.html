@@ -33,9 +33,16 @@
           </mat-form-field>
         </mat-grid-tile>
 
-        <mat-grid-tile [colspan]="getCollSpan(3)" rowspan="4">
-          <mat-form-field style="height:100%;margin-top:1rem">
-            <textarea [ngStyle]="textareaStyle" matInput [placeholder]="'items.caption.description' | translate" formControlName="description"></textarea>
+        <mat-grid-tile [colspan]="getCollSpan(3)" rowspan="2">
+          <mat-form-field style="margin-top:1rem">
+            <textarea
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="6"
+              cdkAutosizeMaxRows="6"
+              matInput
+              formControlName="description"
+              [placeholder]="'items.caption.description' | translate"></textarea>
           </mat-form-field>
         </mat-grid-tile>
 
