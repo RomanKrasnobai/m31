@@ -14,7 +14,7 @@ const allowedExt = [
   '.svg',
 ];
 
-const resolvePath = (file: string) => path.resolve(path.join(__dirname, '..', '..', 'e-shop', 'dist', 'internet-shop', file));
+const resolvePath = (file: string) => path.resolve(path.join(__dirname, '..', 'client', 'internet-shop', file));
 
 @Injectable()
 export class EShopFrontendMiddleware implements NestMiddleware {

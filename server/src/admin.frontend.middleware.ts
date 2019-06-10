@@ -14,7 +14,7 @@ const allowedExt = [
   '.svg',
 ];
 
-const resolvePath = (file: string) => path.resolve(path.join(__dirname, '..', '..', 'admin', 'dist', 'admin', file));
+const resolvePath = (file: string) => path.resolve(path.join(__dirname, '..', 'client', 'admin', file));
 
 @Injectable()
 export class AdminFrontendMiddleware implements NestMiddleware {

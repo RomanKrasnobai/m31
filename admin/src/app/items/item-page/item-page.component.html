@@ -52,7 +52,7 @@
   <mat-card-actions>
     <mat-action-row>
       <button mat-button color="primary" (click)="onBackButtonClick()">{{ 'common.back-button' | translate }}</button>
-      <button *ngIf="!saveButtonHidden" mat-raised-button color="primary" [disabled]="saveButtonDisabled"
+      <button mat-raised-button color="primary" [disabled]="saveButtonDisabled"
         (click)="onSaveButtonClick()">{{ 'common.save-button' | translate }}</button>
     </mat-action-row>
   </mat-card-actions>

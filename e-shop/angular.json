@@ -40,6 +40,7 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
+              "outputPath": "../dist/client/internet-shop",
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
