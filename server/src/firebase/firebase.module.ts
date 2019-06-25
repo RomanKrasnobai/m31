@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 
 import * as firebase from 'firebase';
 import 'firebase/database';
-
+import 'firebase/firestore';
 import { FirebaseService } from './firebase.service';
 
 // Your web app's Firebase configuration
