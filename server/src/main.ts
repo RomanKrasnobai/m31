@@ -16,8 +16,8 @@ async function bootstrap() {
   const adapter = new ExpressAdapter(server);
   const app = await NestFactory.create(AppModule, adapter);
 
-  const eShopFiles = join(__dirname, '..', 'client', 'internet-shop');
-  app.use(express.static(eShopFiles));
+  /*const eShopFiles = join(__dirname, 'public', 'e-shop');
+  app.use(express.static(eShopFiles));*/
   app.use(json({limit: '50mb'}));
 
   const options = new DocumentBuilder()

@@ -43,7 +43,7 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "outputPath": "../dist/client/admin",
+              "outputPath": "../server/dist/public/admin",
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,

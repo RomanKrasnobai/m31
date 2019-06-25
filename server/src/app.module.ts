@@ -5,7 +5,7 @@ import { AppService } from './app.service';
 import { ItemsModule } from './api/items/items.module';
 import { OrdersModule } from './api/orders/orders.module';
 import { AdminFrontendMiddleware } from './admin.frontend.middleware';
-// import { EShopFrontendMiddleware } from './e-shop.frontend.middleware';
+import { EShopFrontendMiddleware } from './e-shop.frontend.middleware';
 import { NovaPoshtaModule } from './nova-poshta/nova-poshta.module';
 import { FirebaseModule } from './firebase/firebase.module';
 
@@ -35,8 +35,8 @@ export class AppModule {
     consumer
       .apply(AdminFrontendMiddleware)
       .forRoutes('admin');
-    /*consumer
+    consumer
       .apply(EShopFrontendMiddleware)
-      .forRoutes('');*/
+      .forRoutes('');
   }
 }
