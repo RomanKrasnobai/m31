@@ -21,7 +21,7 @@ export class OrdersService {
     return from(
       this.collection.get(),
     ).pipe(
-      map(r => r.docs.map(x => ({ id: x.id, ...x.data() }) as OrderDto),
+      map((r: any) => r.docs.map(x => ({ id: x.id, ...x.data() }) as OrderDto),
       ),
     );
   }
@@ -30,7 +30,7 @@ export class OrdersService {
     return from(
       this.collection.doc(id).get(),
     ).pipe(
-      map(r => ({ id, ...r.data() } as OrderDto)),
+      map((r: any) => ({ id, ...r.data() } as OrderDto)),
     );
   }
 
