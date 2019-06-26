@@ -36,14 +36,14 @@
     "@nestjs/swagger": "^3.0.2",
     "body-parser": "^1.19.0",
     "firebase": "^6.1.0",
+    "firebase-admin": "^8.0.0",
+    "firebase-functions": "^3.0.2",
     "guid-typescript": "^1.0.9",
     "nest-router": "^1.0.9",
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",
     "rxjs": "^6.3.3",
-    "swagger-ui-express": "^4.0.5",
-    "firebase-admin": "^8.0.0",
-    "firebase-functions": "^2.3.0"
+    "swagger-ui-express": "^4.0.5"
   },
   "devDependencies": {
     "@nestjs/testing": "^6.0.0",

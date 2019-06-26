@@ -1,15 +1,6 @@
 {
 	"folders": [
 		{
-			"path": "e-shop"
-		},
-		{
-			"path": "admin"
-		},
-		{
-			"path": "server"
-		},
-		{
 			"path": "."
 		}
 	]

@@ -1,0 +1,17 @@
+{
+  "name": "m31-e-shop",
+  "version": "0.0.0",
+  "scripts": {
+    "serve": "firebase serve --only functions,hosting",
+    "deploy": "cd server && npm run deploy",
+    "build:e-shop": "cd e-shop && ng build --prod",
+    "build:admin": "cd admin && ng build --prod",
+    "build:server": "cd server && npm run build",
+    "build": "npm run build:e-shop && npm run build:admin && npm run build:server",
+    "install:e-shop": "cd e-shop && npm install",
+    "install:admin": "cd admin && npm install",
+    "install:server": "cd server && npm install",
+    "install": "npm run install:e-shop && npm run install:admin && npm run install:server"
+  },
+  "private": true
+}

@@ -1,4 +1,4 @@
-import { NestMiddleware, Injectable } from '@nestjs/common';
+import { NestMiddleware, Injectable, Logger } from '@nestjs/common';
 import { Request, Response } from 'express';
 import * as path from 'path';
 
@@ -19,9 +19,10 @@ const resolvePath = (file: string) => path.resolve(path.join(__dirname, 'public'
 @Injectable()
 export class EShopFrontendMiddleware implements NestMiddleware {
 
-  use(req: Request, res: Response, next: Function) {
+  use(req: Request, res: Response, next: () => void) {
     const { url } = req;
-    if (url.indexOf('api') === 0) {
+    if (/\/api/.test(url)) {
+      Logger.log('API on ', req.host + req.url);
       next();
     } else if (allowedExt.filter(ext => url.indexOf(ext) > 0).length > 0) {
       // it has a file extension --> resolve the file

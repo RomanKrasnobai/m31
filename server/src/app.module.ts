@@ -9,7 +9,6 @@ import { EShopFrontendMiddleware } from './e-shop.frontend.middleware';
 import { NovaPoshtaModule } from './nova-poshta/nova-poshta.module';
 import { FirebaseModule } from './firebase/firebase.module';
 
-
 const modules = [
   ItemsModule,
   OrdersModule,
