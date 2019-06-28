@@ -3,6 +3,7 @@ import { HomeComponent } from './home-component.component';
 import { CommonModule } from '@angular/common';
 import { HomeRoutingModule } from './home-routing.module';
 import { SharedComponentsModule } from 'src/app/shared-components/shared-components.module';
+import {MatInputModule} from '@angular/material';
 
 @NgModule({
     declarations: [
@@ -12,6 +13,7 @@ import { SharedComponentsModule } from 'src/app/shared-components/shared-compone
         CommonModule,
         HomeRoutingModule,
         SharedComponentsModule,
+        MatInputModule,
     ],
     providers: []
   })

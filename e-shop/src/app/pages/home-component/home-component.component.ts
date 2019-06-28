@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+// import {AsyncDataService} from '../../services/async-data.service/async-data.service';
 
 @Component({
   selector: 'app-home-component',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  data: any;
+
+  constructor(private http: HttpClient,
+              // private asyncDataService: AsyncDataService
+  ) { }
 
   ngOnInit() {
+    // this.asyncDataService.getAllItems().subscribe(item => { this.data = item; });
   }
-
 }
