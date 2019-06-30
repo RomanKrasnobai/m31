@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-// import {AsyncDataService} from './services/async-data.service/async-data.service';
 import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
@@ -17,7 +16,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     AppRoutingModule,
     BrowserAnimationsModule,
   ],
-  // providers: [AsyncDataService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -63,7 +63,9 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "internet-shop:build"
+            "browserTarget": "internet-shop:build",
+            "aot": true,
+            "proxyConfig": "./proxy-conf.json"
           },
           "configurations": {
             "production": {
