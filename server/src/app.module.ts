@@ -8,11 +8,13 @@ import { AdminFrontendMiddleware } from './admin.frontend.middleware';
 import { EShopFrontendMiddleware } from './e-shop.frontend.middleware';
 import { NovaPoshtaModule } from './nova-poshta/nova-poshta.module';
 import { FirebaseModule } from './firebase/firebase.module';
+import { TranslatesModule } from './api/translates/translates.module';
 
 const modules = [
   ItemsModule,
   OrdersModule,
   NovaPoshtaModule,
+  TranslatesModule,
 ];
 
 const routes: Routes = modules.map(module => ({

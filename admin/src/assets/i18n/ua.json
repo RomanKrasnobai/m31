@@ -1,0 +1,20 @@
+{
+  "common.app-title": "M31 Studio",
+  "common.title.edit": "Редагувати",
+  "common.title.add": "Додати",
+  "common.menu.items": "Товари",
+  "common.menu.orders": "Замовлення",
+  "common.menu.translates": "Переклади",
+  "common.menu.edit": "Редагувати",
+  "common.menu.remove": "Видалити",
+  "common.caption.actions": "Дії",
+  "common.new-button": "Створити",
+  "common.back-button": "Назад",
+  "common.save-button": "Зберегти",
+  "items.list.title": "Товари",
+  "items.page.title": "Товар",
+  "items.caption.name": "Назва",
+  "items.caption.category": "Категорія",
+  "items.caption.price": "Ціна",
+  "items.caption.description": "Опис"
+}

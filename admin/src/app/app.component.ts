@@ -17,10 +17,11 @@ export class AppComponent implements OnDestroy{
   fillerNav: Array<{ title: string, path: string }> = [
     { title: 'common.menu.items', path: 'items' },
     { title: 'common.menu.orders', path: 'orders' },
+    // { title: 'common.menu.translates', path: 'translates' },
   ];
   langs: Array<{ title: string, value: string }> = [
-    { title: 'EN', value: 'en-US' },
-    { title: 'UA', value: 'ua-UK' },
+    { title: 'EN', value: 'en' },
+    { title: 'UA', value: 'ua' },
   ];
   langControl = new FormControl();
 
@@ -55,7 +56,7 @@ export class AppComponent implements OnDestroy{
   }
 
   setUpLang() {
-    let lang = 'en-US';
+    let lang = 'ua';
     if (localStorage) {
       const prefLang = localStorage.getItem('lang');
       if (prefLang) {
@@ -63,7 +64,7 @@ export class AppComponent implements OnDestroy{
         this.translate.use(lang);
       }
     }
-    this.translate.setDefaultLang('en-US');
+    this.translate.setDefaultLang(lang);
     this.langControl.setValue(lang);
     this.langControl.valueChanges.subscribe(l => this.onLangChange(l));
   }
