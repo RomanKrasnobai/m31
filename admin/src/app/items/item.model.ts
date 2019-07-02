@@ -7,10 +7,10 @@ export class ItemCategory {
 
 export class Item {
   id: string;
-  name: string;
+  name: string | { ua: string, en: string };
   categoryCode: string;
   category: ItemCategory;
   price: number;
-  description?: string;
-  image?: string;
+  description?: string | { ua: string, en: string };
+  image?: string | Array<string>;
 }
