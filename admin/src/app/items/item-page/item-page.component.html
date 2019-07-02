@@ -23,7 +23,12 @@
 
         <mat-grid-tile [colspan]="getCollSpan(2)">
           <mat-form-field>
-            <input matInput [placeholder]="'items.caption.category' | translate" formControlName="category" />
+            <mat-label>{{ 'items.caption.category' | translate }}</mat-label>
+            <mat-select formControlName="categoryCode">
+              <mat-option *ngFor="let category of categories" [value]="category.id">
+                {{ getCategoryDisplayValue(category) }}
+              </mat-option>
+            </mat-select>
           </mat-form-field>
         </mat-grid-tile>
 

@@ -21,7 +21,7 @@
         <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'items.caption.category' | translate }}</mat-header-cell>
         <mat-cell *matCellDef="let element" [attr.data-label]="'items.caption.category' | translate"
           (dblclick)="edit(element)">
-          <span>{{ element.category }}</span>
+          <span>{{ getCategoryDisplayValue(element.category) }}</span>
         </mat-cell>
       </ng-container>
 

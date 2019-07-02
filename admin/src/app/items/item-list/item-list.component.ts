@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSort, MatTableDataSource } from '@angular/material';
-import { Observable } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
+
 import { ItemsService } from '../items.service';
-import { Item } from '../item.model';
-import { AppService } from 'src/app/app.service';
+import { Item, ItemCategory } from '../item.model';
+import { AppService } from '../../app.service';
 
 @Component({
   selector: 'app-item-list',
@@ -27,25 +28,38 @@ export class ItemListComponent implements OnInit {
     this.appService.loading$.next(value);
   }
 
+  get lang(): string {
+    return this.translate.currentLang || this.translate.defaultLang;
+  }
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private itemsService: ItemsService,
-    private appService: AppService
+    private translate: TranslateService,
+    private appService: AppService,
   ) { }
 
   ngOnInit() {
-    setTimeout(_ => this.loadData(), 100);
+    setTimeout(() => this.loadData(), 100);
   }
 
   loadData() {
     this.loading = true;
     this.itemsService.getAll()
       .subscribe(data => {
+        this.loading = false;
         this.dataSource = new MatTableDataSource(data);
         this.dataSource.sort = this.sort;
-        this.loading = false;
       });
+  }
+
+  getCategoryDisplayValue(category: ItemCategory): string {
+    let res = '';
+    if (category) {
+      res = category[this.lang] || category.ua;
+    }
+    return res;
   }
 
   onNewButtonClick() {

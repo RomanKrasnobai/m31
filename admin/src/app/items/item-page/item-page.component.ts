@@ -3,10 +3,12 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { tap } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
 
 import { ItemsService } from '../items.service';
-import { Item } from '../item.model';
-import { AppService } from 'src/app/app.service';
+import { Item, ItemCategory } from '../item.model';
+import { AppService } from '../../app.service';
+import { ItemCategoryService } from '../item-category.service';
 
 @Component({
   selector: 'app-item-page',
@@ -24,6 +26,7 @@ export class ItemPageComponent implements OnInit {
 
   public form: FormGroup;
   public id: string;
+  public categories: Array<ItemCategory>;
 
   private entity: Item;
   private mobileQuery: MediaQueryList;
@@ -45,12 +48,18 @@ export class ItemPageComponent implements OnInit {
     this.appService.loading$.next(value);
   }
 
+  get lang(): string {
+    return this.translate.currentLang || this.translate.defaultLang;
+  }
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private itemsService: ItemsService,
+    private categoryService: ItemCategoryService,
     private formBuilder: FormBuilder,
     private appService: AppService,
+    private translate: TranslateService,
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher
   ) {
@@ -68,10 +77,19 @@ export class ItemPageComponent implements OnInit {
         setTimeout(_ => this.loadEntity(id), 100);
       }
     });
+    this.categoryService.getAll().subscribe(categories => this.categories = categories);
   }
 
   getCollSpan(value: number): number {
     return this.isMobile ? 1 : value;
+  }
+
+  getCategoryDisplayValue(category: ItemCategory): string {
+    let res = '';
+    if (category) {
+      res = category[this.lang] || category.ua;
+    }
+    return res;
   }
 
   onBackButtonClick() {
@@ -85,7 +103,7 @@ export class ItemPageComponent implements OnInit {
   private initForm() {
     this.form = this.formBuilder.group({
       name: [null, Validators.required],
-      category: [null, Validators.required],
+      categoryCode: [null, Validators.required],
       price: [null, Validators.required],
       description: [null],
       image: [null],
@@ -106,7 +124,9 @@ export class ItemPageComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    const dto = Object.assign({}, this.entity, this.form.value);
+    const categoryCodeCtrl = this.form.get('categoryCode');
+    const category = this.categories.find(c => c.id === categoryCodeCtrl.value);
+    const dto = Object.assign({}, this.entity, this.form.value, { category });
     this.loading = true;
     this.saveButtonDisabled = true;
     const query = this.id
