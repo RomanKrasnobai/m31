@@ -6,6 +6,7 @@ import { tap } from 'rxjs/operators';
 
 import { ItemsService } from '../items.service';
 import { Item } from '../item.model';
+import { AppService } from 'src/app/app.service';
 
 @Component({
   selector: 'app-item-page',
@@ -36,11 +37,20 @@ export class ItemPageComponent implements OnInit {
     return this.mobileQuery && this.mobileQuery.matches;
   }
 
+  get loading(): boolean {
+    return this.appService.loading$.getValue();
+  }
+
+  set loading(value: boolean) {
+    this.appService.loading$.next(value);
+  }
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private itemsService: ItemsService,
     private formBuilder: FormBuilder,
+    private appService: AppService,
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher
   ) {
@@ -55,7 +65,7 @@ export class ItemPageComponent implements OnInit {
       const { id } = params;
       if (id && id !== this.id) {
         this.id = id;
-        this.loadEntity(id);
+        setTimeout(_ => this.loadEntity(id), 100);
       }
     });
   }
@@ -83,10 +93,12 @@ export class ItemPageComponent implements OnInit {
   }
 
   private loadEntity(id: string) {
+    this.loading = true;
     this.itemsService.getById(id)
       .subscribe(entity => {
         this.entity = entity;
         this.form.patchValue(entity);
+        this.loading = false;
       });
   }
 
@@ -95,6 +107,7 @@ export class ItemPageComponent implements OnInit {
       return;
     }
     const dto = Object.assign({}, this.entity, this.form.value);
+    this.loading = true;
     this.saveButtonDisabled = true;
     const query = this.id
       ? this.itemsService.update(this.id, dto)
@@ -103,10 +116,11 @@ export class ItemPageComponent implements OnInit {
           this.router.navigate(['edit', item.id], { relativeTo: this.route.parent });
         })
       );
-    query.subscribe(
-      () => this.saveButtonDisabled = false,
-      () => this.saveButtonDisabled = false,
-    );
+    const subscribeFn = () => {
+      this.saveButtonDisabled = false;
+      this.loading = false;
+    };
+    query.subscribe(subscribeFn, subscribeFn);
   }
 
 }

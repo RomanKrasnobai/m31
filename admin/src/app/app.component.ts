@@ -1,8 +1,9 @@
 import { Component, ViewChild, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { MatSidenav, MatSnackBar } from '@angular/material';
 import { FormControl } from '@angular/forms';
+import { MatSidenav, MatSnackBar } from '@angular/material';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { TranslateService } from '@ngx-translate/core';
+import { AppService } from './app.service';
 
 @Component({
   selector: 'app-root',
@@ -28,11 +29,20 @@ export class AppComponent implements OnDestroy{
 
   private mobileQueryListener: (ev: MediaQueryListEvent) => void;
 
+  get loading(): boolean {
+    return this.appService.loading$.getValue();
+  }
+
+  set loading(value: boolean) {
+    this.appService.loading$.next(value);
+  }
+
   constructor(
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
     private snackBar: MatSnackBar,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private appService: AppService
   ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this.mobileQueryListener = _ => changeDetectorRef.detectChanges();

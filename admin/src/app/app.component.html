@@ -28,3 +28,7 @@
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>
+<div class="progress-wrap" *ngIf="loading">
+  <mat-progress-spinner color="primary" mode="indeterminate" value="50">
+  </mat-progress-spinner>
+</div>

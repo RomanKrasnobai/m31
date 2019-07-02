@@ -4,6 +4,7 @@ import { MatSort, MatTableDataSource } from '@angular/material';
 
 import { Category } from '../category.model';
 import { CategoriesService } from '../categories.service';
+import { AppService } from 'src/app/app.service';
 
 export class GridCategory extends Category {
   _isNew?: boolean;
@@ -22,15 +23,23 @@ export class CategoryListComponent implements OnInit {
   saveButtonHidden: boolean;
   displayedColumns: Array<string> = ['id', 'ua', 'en', 'menu'];
   controls: FormArray;
-  loading: boolean;
+
+  get loading(): boolean {
+    return this.appService.loading$.getValue();
+  }
+
+  set loading(value: boolean) {
+    this.appService.loading$.next(value);
+  }
 
   constructor(
     private fb: FormBuilder,
-    private categoriesService: CategoriesService
+    private categoriesService: CategoriesService,
+    private appService: AppService
   ) { }
 
   ngOnInit() {
-    this.loadData();
+    setTimeout(_ => this.loadData(), 100);
   }
 
   loadData() {
