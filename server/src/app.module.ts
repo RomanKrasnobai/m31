@@ -9,12 +9,14 @@ import { EShopFrontendMiddleware } from './e-shop.frontend.middleware';
 import { NovaPoshtaModule } from './nova-poshta/nova-poshta.module';
 import { FirebaseModule } from './firebase/firebase.module';
 import { TranslatesModule } from './api/translates/translates.module';
+import { CategoriesModule } from './api/categories/categories.module';
 
 const modules = [
   ItemsModule,
   OrdersModule,
   NovaPoshtaModule,
   TranslatesModule,
+  CategoriesModule,
 ];
 
 const routes: Routes = modules.map(module => ({

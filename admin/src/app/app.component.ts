@@ -17,6 +17,7 @@ export class AppComponent implements OnDestroy{
   fillerNav: Array<{ title: string, path: string }> = [
     { title: 'common.menu.items', path: 'items' },
     { title: 'common.menu.orders', path: 'orders' },
+    { title: 'common.menu.categories', path: 'categories' },
     // { title: 'common.menu.translates', path: 'translates' },
   ];
   langs: Array<{ title: string, value: string }> = [

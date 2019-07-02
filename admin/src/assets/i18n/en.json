@@ -2,8 +2,10 @@
   "common.app-title": "M31 Studio",
   "common.title.edit": "Edit",
   "common.title.add": "Add",
+  "common.errors.field-is-required": "Field is required",
   "common.menu.items": "Items",
   "common.menu.orders": "Orders",
+  "common.menu.categories": "Categories",
   "common.menu.translates": "Translates",
   "common.menu.edit": "Edit",
   "common.menu.remove": "Remove",
@@ -16,5 +18,9 @@
   "items.caption.name": "Name",
   "items.caption.category": "Category",
   "items.caption.price": "Price",
-  "items.caption.description": "Description"
+  "items.caption.description": "Description",
+  "categories.list.title": "Categories",
+  "categories.caption.code": "Code",
+  "categories.caption.ua": "UA",
+  "categories.caption.en": "EN"
 }

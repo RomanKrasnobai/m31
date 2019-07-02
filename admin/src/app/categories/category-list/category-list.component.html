@@ -1,0 +1,71 @@
+<mat-toolbar>
+  <mat-toolbar-row>
+    <span class="title">{{ 'categories.list.title' | translate }}</span>
+    <button mat-raised-button color="primary"
+      (click)="onNewButtonClick()">{{ 'common.new-button' | translate }}</button>
+  </mat-toolbar-row>
+</mat-toolbar>
+<div style="padding-left: 24px; font-size: x-large">
+  <div class="mat-elevation-z8">
+    <mat-table [dataSource]="dataSource" matSort>
+
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'categories.caption.code' | translate }}</mat-header-cell>
+        <mat-cell *matCellDef="let element;let i = index" [attr.data-label]="'categories.caption.code' | translate">
+          <mat-form-field *ngIf="getControl(i, '_isNew').value">
+            <input matInput [formControl]="getControl(i, 'id')">
+            <mat-error *ngIf="getControl(i, 'id').hasError('required')">
+              <strong color="red">{{ 'common.errors.field-is-required' | translate }}</strong>
+            </mat-error>
+          </mat-form-field>
+          <span *ngIf="!getControl(i, '_isNew').value"> {{ element.id }} </span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="ua">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'categories.caption.ua' | translate }}</mat-header-cell>
+        <mat-cell *matCellDef="let element;let i = index" [attr.data-label]="'categories.caption.ua' | translate">
+          <mat-form-field>
+            <input matInput [formControl]="getControl(i, 'ua')">
+            <mat-error *ngIf="getControl(i, 'ua').hasError('required')">
+              <strong color="red">{{ 'common.errors.field-is-required' | translate }}</strong>
+            </mat-error>
+          </mat-form-field>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="en">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'categories.caption.en' | translate }}</mat-header-cell>
+        <mat-cell *matCellDef="let element;let i = index" [attr.data-label]="'categories.caption.en' | translate">
+          <mat-form-field>
+            <input matInput [formControl]="getControl(i, 'en')">
+            <mat-error *ngIf="getControl(i, 'en').hasError('required')">
+              <strong color="red">{{ 'common.errors.field-is-required' | translate }}</strong>
+            </mat-error>
+          </mat-form-field>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Menu Column -->
+      <ng-container matColumnDef="menu">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let element;let i = index">
+          <div class="icon-btn" (click)="onSaveButtonClick(i)" *ngIf="getControlGroup(i).dirty">
+            <mat-icon [attr.disabled]="getControlGroup(i).invalid || null">save</mat-icon>
+          </div>
+          <div class="icon-btn" (click)="remove(i)">
+            <mat-icon>delete</mat-icon>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+    </mat-table>
+  </div>
+</div>
+<div class="progress-wrap" *ngIf="loading">
+  <mat-progress-spinner color="primary" mode="indeterminate" value="50">
+  </mat-progress-spinner>
+</div>
