@@ -79,7 +79,7 @@ export class CategoryListComponent implements OnInit {
 
   onNewButtonClick() {
     const data = this.dataSource.data;
-    data.unshift({ isNew: true } as GridCategory);
+    data.push({ isNew: true } as GridCategory);
     this.controls = this.fb.array(data.map(x => this.createControl(x)));
     this.dataSource.data = data;
   }
