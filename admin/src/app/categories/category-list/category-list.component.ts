@@ -13,7 +13,7 @@ import {
 } from '../../core/alert-dialog/alert-dialog.component';
 
 export class GridCategory extends Category {
-  _isNew?: boolean;
+  isNew?: boolean;
 }
 
 @Component({
@@ -65,7 +65,7 @@ export class CategoryListComponent implements OnInit {
       id: [value && value.id || null, [Validators.required]],
       ua: [value && value.ua || null, [Validators.required]],
       en: [value && value.en || null, [Validators.required]],
-      _isNew: Boolean(value && value._isNew)
+      isNew: Boolean(value && value.isNew)
     });
   }
 
@@ -79,7 +79,7 @@ export class CategoryListComponent implements OnInit {
 
   onNewButtonClick() {
     const data = this.dataSource.data;
-    data.push({ _isNew: true } as GridCategory);
+    data.unshift({ isNew: true } as GridCategory);
     this.controls = this.fb.array(data.map(x => this.createControl(x)));
     this.dataSource.data = data;
   }
@@ -122,7 +122,7 @@ export class CategoryListComponent implements OnInit {
   }
   private remove(index: number) {
     const category = this.getControlGroup(index).getRawValue() as GridCategory;
-    if (category._isNew) {
+    if (category.isNew) {
       const data = this.dataSource.data;
       const idx = data.indexOf(category);
       data.splice(idx, 1);
