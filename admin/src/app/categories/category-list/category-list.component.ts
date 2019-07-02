@@ -1,10 +1,16 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormArray, FormControl, Validators, FormGroup } from '@angular/forms';
-import { MatSort, MatTableDataSource } from '@angular/material';
+import { MatSort, MatTableDataSource, MatDialog } from '@angular/material';
 
 import { Category } from '../category.model';
 import { CategoriesService } from '../categories.service';
-import { AppService } from 'src/app/app.service';
+import { AppService } from '../../app.service';
+import {
+  AlertDialogComponent,
+  AlertDialogButtonCode,
+  AlertDialogButtonColor,
+  AlertDialogData
+} from '../../core/alert-dialog/alert-dialog.component';
 
 export class GridCategory extends Category {
   _isNew?: boolean;
@@ -35,7 +41,8 @@ export class CategoryListComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private categoriesService: CategoriesService,
-    private appService: AppService
+    private appService: AppService,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -90,7 +97,30 @@ export class CategoryListComponent implements OnInit {
     } as Category).subscribe(_ => this.loadData());
   }
 
-  remove(index: number) {
+  onRemoveButtonClick(index: number) {
+    const dialogRef = this.dialog.open(AlertDialogComponent, {
+      data: {
+        title: '',
+        message: 'common.remove-confirm',
+        buttons: [
+          {
+            buttonCode: AlertDialogButtonCode.Yes,
+            color: AlertDialogButtonColor.Primary
+          },
+          {
+            buttonCode: AlertDialogButtonCode.No
+          }
+        ],
+        type: null
+      } as AlertDialogData
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === AlertDialogButtonCode.Yes) {
+        this.remove(index);
+      }
+    });
+  }
+  private remove(index: number) {
     const category = this.getControlGroup(index).getRawValue() as GridCategory;
     if (category._isNew) {
       const data = this.dataSource.data;

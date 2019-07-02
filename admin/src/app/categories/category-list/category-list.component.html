@@ -11,22 +11,26 @@
 
       <ng-container matColumnDef="id">
         <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'categories.caption.code' | translate }}</mat-header-cell>
-        <mat-cell *matCellDef="let element;let i = index" [attr.data-label]="'categories.caption.code' | translate">
+        <mat-cell *matCellDef="let element;let i = index">
           <mat-form-field *ngIf="getControl(i, '_isNew').value">
-            <input matInput [formControl]="getControl(i, 'id')">
+            <input matInput [formControl]="getControl(i, 'id')" [placeholder]="'categories.caption.code' | translate">
             <mat-error *ngIf="getControl(i, 'id').hasError('required')">
               <strong color="red">{{ 'common.errors.field-is-required' | translate }}</strong>
             </mat-error>
           </mat-form-field>
-          <span *ngIf="!getControl(i, '_isNew').value"> {{ element.id }} </span>
+          <div *ngIf="!getControl(i, '_isNew').value" class="row">
+            <div class="label">{{ 'categories.caption.code' | translate }}</div>
+            <div spacer></div>
+            <div class="value">{{ element.id }}</div>
+          </div>
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="ua">
         <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'categories.caption.ua' | translate }}</mat-header-cell>
-        <mat-cell *matCellDef="let element;let i = index" [attr.data-label]="'categories.caption.ua' | translate">
+        <mat-cell *matCellDef="let element;let i = index">
           <mat-form-field>
-            <input matInput [formControl]="getControl(i, 'ua')">
+            <input matInput [formControl]="getControl(i, 'ua')" [placeholder]="'categories.caption.ua' | translate">
             <mat-error *ngIf="getControl(i, 'ua').hasError('required')">
               <strong color="red">{{ 'common.errors.field-is-required' | translate }}</strong>
             </mat-error>
@@ -36,9 +40,9 @@
 
       <ng-container matColumnDef="en">
         <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'categories.caption.en' | translate }}</mat-header-cell>
-        <mat-cell *matCellDef="let element;let i = index" [attr.data-label]="'categories.caption.en' | translate">
+        <mat-cell *matCellDef="let element;let i = index">
           <mat-form-field>
-            <input matInput [formControl]="getControl(i, 'en')">
+            <input matInput [formControl]="getControl(i, 'en')" [placeholder]="'categories.caption.en' | translate">
             <mat-error *ngIf="getControl(i, 'en').hasError('required')">
               <strong color="red">{{ 'common.errors.field-is-required' | translate }}</strong>
             </mat-error>
@@ -50,11 +54,15 @@
       <ng-container matColumnDef="menu">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let element;let i = index">
-          <div class="icon-btn" (click)="onSaveButtonClick(i)" *ngIf="getControlGroup(i).dirty">
-            <mat-icon [attr.disabled]="getControlGroup(i).invalid || null">save</mat-icon>
-          </div>
-          <div class="icon-btn" (click)="remove(i)">
-            <mat-icon>delete</mat-icon>
+          <div class="row actions">
+            <div class="icon-btn" *ngIf="getControlGroup(i).dirty">
+              <mat-icon (click)="onSaveButtonClick(i)" [attr.disabled]="getControlGroup(i).invalid || null">save</mat-icon>
+              <button mat-raised-button color="primary" (click)="onSaveButtonClick(i)">{{ 'common.save-button' | translate }}</button>
+            </div>
+            <div class="icon-btn" >
+              <mat-icon (click)="onRemoveButtonClick(i)">delete</mat-icon>
+              <button mat-raised-button color="accent" (click)="onRemoveButtonClick(i)">{{ 'common.remove-button' | translate }}</button>
+            </div>
           </div>
         </mat-cell>
       </ng-container>

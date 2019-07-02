@@ -1,11 +1,17 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MatSort, MatTableDataSource } from '@angular/material';
+import { MatSort, MatTableDataSource, MatDialog } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 
 import { ItemsService } from '../items.service';
 import { Item, ItemCategory } from '../item.model';
 import { AppService } from '../../app.service';
+import {
+  AlertDialogComponent,
+  AlertDialogButtonCode,
+  AlertDialogButtonColor,
+  AlertDialogData
+} from '../../core/alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'app-item-list',
@@ -38,6 +44,7 @@ export class ItemListComponent implements OnInit {
     private itemsService: ItemsService,
     private translate: TranslateService,
     private appService: AppService,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -66,13 +73,37 @@ export class ItemListComponent implements OnInit {
     this.router.navigate(['new'], { relativeTo: this.route });
   }
 
-  edit(element: any) {
-    this.router.navigate(['edit', element.id], { relativeTo: this.route });
+  edit(item: Item) {
+    this.router.navigate(['edit', item.id], { relativeTo: this.route });
   }
 
-  remove(element: any) {
+  onRemoveButtonClick(item: Item) {
+    const dialogRef = this.dialog.open(AlertDialogComponent, {
+      data: {
+        title: '',
+        message: 'common.remove-confirm',
+        buttons: [
+          {
+            buttonCode: AlertDialogButtonCode.Yes,
+            color: AlertDialogButtonColor.Primary
+          },
+          {
+            buttonCode: AlertDialogButtonCode.No
+          }
+        ],
+        type: null
+      } as AlertDialogData
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === AlertDialogButtonCode.Yes) {
+        this.remove(item);
+      }
+    });
+  }
+
+  private remove(item: Item) {
     this.loading = true;
-    this.itemsService.delete(element.id).subscribe(() => this.loadData());
+    this.itemsService.delete(item.id).subscribe(() => this.loadData());
   }
 
 }

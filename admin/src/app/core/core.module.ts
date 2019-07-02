@@ -31,9 +31,10 @@ import {
 import { CoreTranslateService } from './translate.service';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ImageControlComponent } from './image-control/image-control.component';
+import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
 
 @NgModule({
-  declarations: [ImageControlComponent],
+  declarations: [ImageControlComponent, AlertDialogComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -87,7 +88,9 @@ import { ImageControlComponent } from './image-control/image-control.component';
     MatExpansionModule,
     MatSortModule,
     ImageControlComponent,
+    AlertDialogComponent,
   ],
+  entryComponents: [AlertDialogComponent],
   providers: [
     { provide: TranslateService, useClass: CoreTranslateService }
   ]

@@ -9,6 +9,9 @@ body
 .mat-table
   width: 100%
 
+.row
+  display: flex
+
 app-lookup-control,
 app-drop-down-control,
 .mat-form-field
@@ -50,7 +53,7 @@ app-drop-down-control,
   .mat-table .mat-cell
     border-bottom: 1px solid #ddd
     display: block
-    font-size: 1em
+    font-size: 1rem
     text-align: right
     height: 30px
     margin-bottom: 4%
@@ -64,13 +67,16 @@ app-drop-down-control,
     /* text-transform: uppercase; */
     font-weight: bold
     padding-left: 1rem
-    font-size: .85em
+    font-size: .85rem
+    width: 64px
 
   .mat-table .mat-cell:last-child
     border-bottom: 0
 
-    .mat-table .mat-cell:first-child
+  .mat-table .mat-cell:first-child
     margin-top: 4%
+  .mat-cell:first-of-type
+    padding-left: 0
 
 .title
   margin-right: 12px
