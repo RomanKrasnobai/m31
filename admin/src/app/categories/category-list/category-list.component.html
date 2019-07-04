@@ -12,13 +12,13 @@
       <ng-container matColumnDef="id">
         <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'categories.caption.code' | translate }}</mat-header-cell>
         <mat-cell *matCellDef="let element;let i = index">
-          <mat-form-field *ngIf="getControl(i, '_isNew').value">
+          <mat-form-field *ngIf="getControl(i, 'isNew').value" class="table-input-wrap">
             <input matInput [formControl]="getControl(i, 'id')" [placeholder]="'categories.caption.code' | translate">
             <mat-error *ngIf="getControl(i, 'id').hasError('required')">
               <strong color="red">{{ 'common.errors.field-is-required' | translate }}</strong>
             </mat-error>
           </mat-form-field>
-          <div *ngIf="!getControl(i, '_isNew').value" class="row">
+          <div *ngIf="!getControl(i, 'isNew').value" class="row">
             <div class="label">{{ 'categories.caption.code' | translate }}</div>
             <div spacer></div>
             <div class="value">{{ element.id }}</div>
@@ -29,8 +29,8 @@
       <ng-container matColumnDef="ua">
         <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'categories.caption.ua' | translate }}</mat-header-cell>
         <mat-cell *matCellDef="let element;let i = index">
-          <mat-form-field>
-            <input matInput [formControl]="getControl(i, 'ua')" [placeholder]="'categories.caption.ua' | translate">
+          <mat-form-field class="table-input-wrap">
+            <input matInput [formControl]="getControl(i, 'ua')" [placeholder]="'categories.caption.ua' | translate" >
             <mat-error *ngIf="getControl(i, 'ua').hasError('required')">
               <strong color="red">{{ 'common.errors.field-is-required' | translate }}</strong>
             </mat-error>
@@ -41,7 +41,7 @@
       <ng-container matColumnDef="en">
         <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'categories.caption.en' | translate }}</mat-header-cell>
         <mat-cell *matCellDef="let element;let i = index">
-          <mat-form-field>
+          <mat-form-field class="table-input-wrap">
             <input matInput [formControl]="getControl(i, 'en')" [placeholder]="'categories.caption.en' | translate">
             <mat-error *ngIf="getControl(i, 'en').hasError('required')">
               <strong color="red">{{ 'common.errors.field-is-required' | translate }}</strong>

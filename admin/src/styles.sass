@@ -22,8 +22,13 @@ app-drop-down-control,
 [spacer]
   flex: 1 0 auto
 
+.table-input-wrap .mat-form-field-label-wrapper
+  display: none
 
 @media screen and (max-width: 600px)
+  .table-input-wrap .mat-form-field-label-wrapper
+    display: initial
+
   .mat-table
     border: 0
     vertical-align: middle
