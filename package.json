@@ -13,5 +13,6 @@
     "install:server": "cd server && npm install",
     "install": "npm run install:e-shop && npm run install:admin && npm run install:server"
   },
-  "private": true
+  "private": true,
+  "dependencies": {}
 }

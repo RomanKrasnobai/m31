@@ -19,6 +19,7 @@
   "common.alert-dialog-button.yes": "Yes",
   "common.alert-dialog-button.no": "No",
   "common.alert-dialog-button.cancel": "Cancel",
+  "common.currency.uah": "UAH",
   "items.list.title": "Items",
   "items.page.title": "Item",
   "items.caption.name": "Name",

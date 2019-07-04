@@ -19,6 +19,7 @@
   "common.alert-dialog-button.yes": "Так",
   "common.alert-dialog-button.no": "Ні",
   "common.alert-dialog-button.cancel": "Відміна",
+  "common.currency.uah": "грн",
   "items.list.title": "Товари",
   "items.page.title": "Товар",
   "items.caption.name": "Назва",

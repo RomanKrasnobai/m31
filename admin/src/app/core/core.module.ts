@@ -4,10 +4,9 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { TranslateModule, TranslateService, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, 'admin/assets/i18n/');
-}
+import { TextMaskModule } from 'angular2-text-mask';
 
 import {
   MatButtonModule,
@@ -28,10 +27,14 @@ import {
   MatProgressSpinnerModule,
   MatSortModule,
 } from '@angular/material';
+
 import { CoreTranslateService } from './translate.service';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ImageControlComponent } from './image-control/image-control.component';
 import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, 'admin/assets/i18n/');
+}
 
 @NgModule({
   declarations: [ImageControlComponent, AlertDialogComponent],
@@ -63,6 +66,7 @@ import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
       loader: { provide: TranslateLoader, useFactory: HttpLoaderFactory, deps: [HttpClient] },
       // isolate: true
     }),
+    TextMaskModule
   ],
   exports: [
     CommonModule,
@@ -89,6 +93,7 @@ import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
     MatSortModule,
     ImageControlComponent,
     AlertDialogComponent,
+    TextMaskModule
   ],
   entryComponents: [AlertDialogComponent],
   providers: [

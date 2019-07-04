@@ -38,6 +38,14 @@ export class ItemListComponent implements OnInit {
     return this.translate.currentLang || this.translate.defaultLang;
   }
 
+  get currencyMask() {
+    return this.appService.currencyMask;
+  }
+
+  get currencySuffix(): string {
+    return this.appService.currencySuffix;
+  }
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,

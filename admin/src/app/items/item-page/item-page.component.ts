@@ -20,8 +20,8 @@ export class ItemPageComponent implements OnInit {
   saveButtonDisabled: boolean;
 
   textareaStyle = {
-    'resize': 'none',
-    'height': '14rem',
+    resize: 'none',
+    height: '14rem',
   };
 
   public form: FormGroup;
@@ -50,6 +50,10 @@ export class ItemPageComponent implements OnInit {
 
   get lang(): string {
     return this.translate.currentLang || this.translate.defaultLang;
+  }
+
+  get currencyMask() {
+    return this.appService.currencyMask;
   }
 
   constructor(
@@ -126,7 +130,10 @@ export class ItemPageComponent implements OnInit {
     }
     const categoryCodeCtrl = this.form.get('categoryCode');
     const category = this.categories.find(c => c.id === categoryCodeCtrl.value);
-    const dto = Object.assign({}, this.entity, this.form.value, { category });
+    const priceCtrl = this.form.get('price');
+    const priceExec = /\d+\.{0,1}\d+/.exec(priceCtrl.value);
+    const price = Number.parseFloat(priceExec ? priceExec[0] : '0') || 0;
+    const dto = Object.assign({}, this.entity, this.form.value, { price, category });
     this.loading = true;
     this.saveButtonDisabled = true;
     const query = this.id

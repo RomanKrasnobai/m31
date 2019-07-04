@@ -34,7 +34,7 @@
 
         <mat-grid-tile [colspan]="getCollSpan(2)">
           <mat-form-field>
-            <input matInput type=number [placeholder]="'items.caption.price' | translate" formControlName="price" />
+            <input matInput type="text" [placeholder]="'items.caption.price' | translate" formControlName="price" [textMask]="currencyMask" />
           </mat-form-field>
         </mat-grid-tile>
 

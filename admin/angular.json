@@ -33,7 +33,9 @@
             "scripts": [],
             "es5BrowserSupport": true,
             "baseHref": "",
-            "deployUrl": "admin/"
+            "deployUrl": "admin/",
+            "sourceMap": true,
+            "vendorSourceMap": true
           },
           "configurations": {
             "production": {
