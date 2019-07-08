@@ -1,0 +1,18 @@
+<mat-form-field>
+  <div class="row">
+    <form class="ml-input-wrap" [formGroup]="form" #formEl>
+      <div *ngFor="let lang of langs" [attr.lang]="lang">
+        <div *ngIf="selectedLang === lang" >
+          <input matInput [placeholder]="placeholder | translate" [formControlName]="lang" (focus)="emitOnTouch()" />
+        </div>
+      </div>
+    </form>
+    <div class="ml-select-wrap">
+      <mat-select [(ngModel)]="selectedLang" (ngModelChange)="formEl.click()">
+        <mat-option *ngFor="let lang of langs" [value]="lang">
+          {{ lang | uppercase }}
+        </mat-option>
+      </mat-select>
+    </div>
+  </div>
+</mat-form-field>

@@ -47,6 +47,7 @@ export class AppComponent implements OnDestroy{
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this.mobileQueryListener = _ => changeDetectorRef.detectChanges();
     this.mobileQuery.addEventListener('change', this.mobileQueryListener);
+    this.translate.addLangs(this.langs.map(l => l.value));
     this.setUpLang();
   }
 

@@ -31,13 +31,18 @@ import {
 import { CoreTranslateService } from './translate.service';
 import { ImageControlComponent } from './image-control/image-control.component';
 import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
+import { MultiLangInputComponent } from './multi-lang-input/multi-lang-input.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, 'admin/assets/i18n/');
 }
 
 @NgModule({
-  declarations: [ImageControlComponent, AlertDialogComponent],
+  declarations: [
+    ImageControlComponent,
+    AlertDialogComponent,
+    MultiLangInputComponent,
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -73,6 +78,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     FormsModule,
     ReactiveFormsModule,
     TranslateModule,
+    TextMaskModule,
 
     MatButtonModule,
     MatSnackBarModule,
@@ -93,7 +99,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatSortModule,
     ImageControlComponent,
     AlertDialogComponent,
-    TextMaskModule
+    MultiLangInputComponent,
   ],
   entryComponents: [AlertDialogComponent],
   providers: [

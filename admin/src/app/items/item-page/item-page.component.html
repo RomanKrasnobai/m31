@@ -16,9 +16,7 @@
         </mat-grid-tile>
 
         <mat-grid-tile [colspan]="getCollSpan(2)">
-          <mat-form-field>
-            <input matInput [placeholder]="'items.caption.name' | translate" formControlName="name" />
-          </mat-form-field>
+          <app-multi-lang-input [placeholder]="'items.caption.name' | translate" formControlName="name"></app-multi-lang-input>
         </mat-grid-tile>
 
         <mat-grid-tile [colspan]="getCollSpan(2)">

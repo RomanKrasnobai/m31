@@ -69,6 +69,12 @@ export class ItemListComponent implements OnInit {
       });
   }
 
+  getDisplayName(item: Item): string {
+    const currentLang = this.translate.currentLang || this.translate.defaultLang;
+    const name = item && item.name || '';
+    return name.constructor === String ? name : name[currentLang] || '';
+  }
+
   getCategoryDisplayValue(category: ItemCategory): string {
     let res = '';
     if (category) {

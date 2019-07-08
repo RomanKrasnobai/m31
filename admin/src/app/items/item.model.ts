@@ -1,7 +1,7 @@
-export class ItemCategory {
+import { MultiLangText } from '../core/models/multi-lang-text.model';
+
+export class ItemCategory extends MultiLangText {
   id: string;
-  ua: string;
-  en: string;
 }
 
 
