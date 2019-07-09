@@ -26,12 +26,14 @@ import {
   MatExpansionModule,
   MatProgressSpinnerModule,
   MatSortModule,
+  MatTabsModule,
 } from '@angular/material';
 
 import { CoreTranslateService } from './translate.service';
 import { ImageControlComponent } from './image-control/image-control.component';
 import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
 import { MultiLangInputComponent } from './multi-lang-input/multi-lang-input.component';
+import { MultiLangTextareaComponent } from './multi-lang-textarea/multi-lang-textarea.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, 'admin/assets/i18n/');
@@ -42,6 +44,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ImageControlComponent,
     AlertDialogComponent,
     MultiLangInputComponent,
+    MultiLangTextareaComponent,
   ],
   imports: [
     CommonModule,
@@ -66,6 +69,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatDialogModule,
     MatExpansionModule,
     MatSortModule,
+    MatTabsModule,
 
     TranslateModule.forRoot({
       loader: { provide: TranslateLoader, useFactory: HttpLoaderFactory, deps: [HttpClient] },
@@ -97,9 +101,12 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatDialogModule,
     MatExpansionModule,
     MatSortModule,
+    MatTabsModule,
+
     ImageControlComponent,
     AlertDialogComponent,
     MultiLangInputComponent,
+    MultiLangTextareaComponent,
   ],
   entryComponents: [AlertDialogComponent],
   providers: [

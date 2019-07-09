@@ -1,0 +1,17 @@
+<form class="ml-input-wrap" [formGroup]="form">
+  <mat-tab-group [selectedIndex]="selectedLangIndex">
+    <mat-tab *ngFor="let lang of langs" [label]="lang | uppercase">
+      <mat-form-field>
+        <textarea
+          matInput
+          cdkTextareaAutosize
+          #autosize="cdkTextareaAutosize"
+          [cdkAutosizeMinRows]="minRows"
+          [cdkAutosizeMaxRows]="maxRows"
+          [formControlName]="lang"
+          [placeholder]="placeholder | translate">
+        </textarea>
+      </mat-form-field>
+    </mat-tab>
+  </mat-tab-group>
+</form>

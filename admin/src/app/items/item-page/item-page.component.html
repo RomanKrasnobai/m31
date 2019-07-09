@@ -16,7 +16,7 @@
         </mat-grid-tile>
 
         <mat-grid-tile [colspan]="getCollSpan(2)">
-          <app-multi-lang-input [placeholder]="'items.caption.name' | translate" formControlName="name"></app-multi-lang-input>
+          <app-multi-lang-input placeholder="items.caption.name" formControlName="name"></app-multi-lang-input>
         </mat-grid-tile>
 
         <mat-grid-tile [colspan]="getCollSpan(2)">
@@ -37,16 +37,11 @@
         </mat-grid-tile>
 
         <mat-grid-tile [colspan]="getCollSpan(3)" rowspan="2">
-          <mat-form-field style="margin-top:1rem">
-            <textarea
-              cdkTextareaAutosize
-              #autosize="cdkTextareaAutosize"
-              cdkAutosizeMinRows="6"
-              cdkAutosizeMaxRows="6"
-              matInput
-              formControlName="description"
-              [placeholder]="'items.caption.description' | translate"></textarea>
-          </mat-form-field>
+          <app-multi-lang-textarea 
+            formControlName="description"
+            minRows="5"
+            maxRows="5"
+            placeholder="items.caption.description"></app-multi-lang-textarea>
         </mat-grid-tile>
 
       </mat-grid-list>

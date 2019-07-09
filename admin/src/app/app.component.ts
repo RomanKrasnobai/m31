@@ -22,8 +22,8 @@ export class AppComponent implements OnDestroy{
     // { title: 'common.menu.translates', path: 'translates' },
   ];
   langs: Array<{ title: string, value: string }> = [
-    { title: 'EN', value: 'en' },
     { title: 'UA', value: 'ua' },
+    { title: 'EN', value: 'en' },
   ];
   langControl = new FormControl();
 
