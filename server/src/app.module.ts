@@ -40,6 +40,6 @@ export class AppModule {
       .forRoutes('admin');
     consumer
       .apply(EShopFrontendMiddleware)
-      .forRoutes('');
+      .forRoutes('e-shop');
   }
 }

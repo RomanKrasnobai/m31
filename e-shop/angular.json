@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/internet-shop",
+            "outputPath": "../server/dist/public/e-shop",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -30,7 +30,11 @@
               "src/styles.sass"
             ],
             "scripts": [],
-            "es5BrowserSupport": true
+            "es5BrowserSupport": true,
+            "baseHref": "",
+            "deployUrl": "e-shop/",
+            "sourceMap": true,
+            "vendorSourceMap": true
           },
           "configurations": {
             "production": {
@@ -41,9 +45,11 @@
                 }
               ],
               "outputPath": "../server/dist/public/e-shop",
+              "deployUrl": "",
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
+              "vendorSourceMap": false,
               "extractCss": true,
               "namedChunks": false,
               "aot": true,
@@ -64,8 +70,7 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "internet-shop:build",
-            "aot": true,
-            "proxyConfig": "./proxy-conf.json"
+            "aot": true
           },
           "configurations": {
             "production": {
