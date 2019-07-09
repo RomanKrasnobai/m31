@@ -25,6 +25,7 @@ async function bootstrap() {
     .setDescription('M31 Studio API')
     .setVersion('1.0')
     .addTag('M31')
+    .setBasePath('m31-studio/us-central1/app')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('swagger', app, document);
