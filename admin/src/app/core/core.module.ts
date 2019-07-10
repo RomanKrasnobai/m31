@@ -36,7 +36,7 @@ import { MultiLangInputComponent } from './multi-lang-input/multi-lang-input.com
 import { MultiLangTextareaComponent } from './multi-lang-textarea/multi-lang-textarea.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, 'admin/assets/i18n/');
+  return new TranslateHttpLoader(http, `admin/assets/i18n/`);
 }
 
 @NgModule({
