@@ -1,7 +1,11 @@
 {
   "/api/*": {
-    "target": "http://localhost:5001/m31-studio/us-central1/app",
-    "secure": false,
-    "logLevel": "debug"
+  "target": "https://m31-studio.web.app/api",
+  "secure": false,
+  "logLevel": "debug",
+  "changeOrigin": true,
+  "pathRewrite": {
+      "^/api": ""
+    }
   }
 }
