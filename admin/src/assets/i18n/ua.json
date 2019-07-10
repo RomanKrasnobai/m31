@@ -29,5 +29,15 @@
   "categories.list.title": "Категорії",
   "categories.caption.code": "Код",
   "categories.caption.ua": "Укр.",
-  "categories.caption.en": "Англ."
+  "categories.caption.en": "Англ.",
+  "order.page.group-title.personal-data": "Персональні дані",
+  "order.page.group-title.cart": "Корзина",
+  "order.page.group-title.delivery-info": "Інформація про доставку",
+  "order.page.group-title.payment": "Оплата",
+  "order.page.title": "Замовлення",
+  "order.caption.first-name": "Ім'я",
+  "order.caption.last-name": "Прізвище",
+  "order.caption.phone": "Телефон",
+  "order.caption.email": "Електронна пошта",
+  "order.caption.address": "Адреса"
 }

@@ -1,3 +1,117 @@
-<p>
-  order-page works!
-</p>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      <span title>{{ 'order.page.title' | translate }}</span>
+    </mat-card-title>
+    <mat-card-subtitle>
+      <span title>{{ (id ? 'common.title.edit' : 'common.title.add') | translate }}</span>
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="form">
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{'order.page.group-title.personal-data' | translate }}
+            </mat-panel-title>
+            <mat-panel-description>
+              <span class="required-asterisk" *ngIf="form.get('customer').invalid">*</span>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <mat-grid-list [cols]="getCollSpan(4)" rowHeight="64px" formGroupName="customer">
+    
+            <mat-grid-tile [colspan]="getCollSpan(2)">
+              <mat-form-field>
+                <input matInput type="text" [placeholder]="'order.caption.first-name' | translate" formControlName="firstName" />
+              </mat-form-field>
+            </mat-grid-tile>
+    
+            <mat-grid-tile [colspan]="getCollSpan(2)">
+              <mat-form-field>
+                <input matInput type="text" [placeholder]="'order.caption.last-name' | translate" formControlName="lastName" />
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="getCollSpan(2)">
+              <mat-form-field>
+                <input matInput type="text" [placeholder]="'order.caption.phone' | translate" formControlName="phone" />
+              </mat-form-field>
+            </mat-grid-tile>
+    
+            <mat-grid-tile [colspan]="getCollSpan(2)">
+              <mat-form-field>
+                <input matInput type="text" [placeholder]="'order.caption.email' | translate" formControlName="email" />
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="getCollSpan(4)">
+              <mat-form-field>
+                <input matInput type="text" [placeholder]="'order.caption.address' | translate" formControlName="address" />
+              </mat-form-field>
+            </mat-grid-tile>
+    
+          </mat-grid-list>
+
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{'order.page.group-title.cart' | translate }}
+            </mat-panel-title>
+            <mat-panel-description>
+              <span class="required-asterisk" *ngIf="form.get('cart').invalid">*</span>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <mat-grid-list [cols]="getCollSpan(4)" rowHeight="64px" formGroupName="cart">
+
+          </mat-grid-list>
+
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{'order.page.group-title.delivery-info' | translate }}
+            </mat-panel-title>
+            <mat-panel-description>
+              <span class="required-asterisk" *ngIf="form.get('deliveryInfo').invalid">*</span>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <mat-grid-list [cols]="getCollSpan(4)" rowHeight="64px" formGroupName="deliveryInfo">
+
+          </mat-grid-list>
+
+        </mat-expansion-panel>
+
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{'order.page.group-title.payment' | translate }}
+            </mat-panel-title>
+            <mat-panel-description>
+              <span class="required-asterisk" *ngIf="form.get('paymentMethod').invalid">*</span>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <mat-grid-list [cols]="getCollSpan(4)" rowHeight="64px">
+
+          </mat-grid-list>
+
+        </mat-expansion-panel>
+
+      </mat-accordion>
+    </form>
+  </mat-card-content>
+  <mat-card-actions>
+    <mat-action-row>
+      <button mat-button color="primary" (click)="onBackButtonClick()">{{ 'common.back-button' | translate }}</button>
+      <button mat-raised-button color="primary" [disabled]="saveButtonDisabled"
+        (click)="onSaveButtonClick()">{{ 'common.save-button' | translate }}</button>
+    </mat-action-row>
+  </mat-card-actions>
+</mat-card>

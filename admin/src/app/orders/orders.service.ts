@@ -15,12 +15,12 @@ export class OrdersService {
     return this.http.get<Order[]>('api/orders');
   }
 
-  getById(): Observable<Order> {
-    return this.http.get<Order>('api/orders');
+  getById(id: string): Observable<Order> {
+    return this.http.get<Order>(`api/orders/${id}`);
   }
 
   create(dto: Order): Observable<Order> {
-    return this.http.post<string>('api/orders', dto);
+    return this.http.post<Order>('api/orders', dto);
   }
 
   update(id: string, dto: Order): Observable<Order> {

@@ -29,5 +29,15 @@
   "categories.list.title": "Categories",
   "categories.caption.code": "Code",
   "categories.caption.ua": "UA",
-  "categories.caption.en": "EN"
+  "categories.caption.en": "EN",
+  "order.page.group-title.personal-data": "Personal data",
+  "order.page.group-title.cart": "Cart",
+  "order.page.group-title.delivery-info": "Delivery Info",
+  "order.page.group-title.payment": "Payment",
+  "order.page.title": "Order",
+  "order.caption.first-name": "First Name",
+  "order.caption.last-name": "Last Name",
+  "order.caption.phone": "Phone",
+  "order.caption.email": "E-Mail",
+  "order.caption.address": "Address"
 }
