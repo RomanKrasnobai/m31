@@ -8,6 +8,7 @@ import { City } from './dto/city.dto';
 import { Settlement } from './dto/settlement.dto';
 import { Warehouse } from './dto/warehouse.dto';
 import { ApiResponse } from './api-response';
+import { Street } from './dto/street.dto';
 
 @Injectable()
 export class NovaPoshtaService {
@@ -47,11 +48,34 @@ export class NovaPoshtaService {
     });
   }
 
+  searchSettlements(cityName: string, limit: number): Observable<Settlement[]> {
+    return this.callApi('Address', 'searchSettlements', {
+      CityName: cityName,
+      Limit: limit,
+    });
+  }
+
+  searchSettlementStreets(settlementRef: string, streetName: string, limit: number): Observable<Street[]> {
+    return this.callApi('Address', 'searchSettlementStreets', {
+      StreetName: streetName,
+      SettlementRef: settlementRef,
+      Limit: limit,
+    });
+  }
+
   getWarehouses(settlementRef: string): Observable<Warehouse[]> {
     // return this.handleRequest('warehouses', 'AddressGeneral', 'getWarehouses', {
     //   SettlementRef: settlementRef,
     // });
     return this.callApi('AddressGeneral', 'getWarehouses', {
+      SettlementRef: settlementRef,
+    });
+  }
+  getWarehouseTypes(settlementRef: string): Observable<Warehouse[]> {
+    // return this.handleRequest('warehouses', 'AddressGeneral', 'getWarehouses', {
+    //   SettlementRef: settlementRef,
+    // });
+    return this.callApi('AddressGeneral', 'getWarehouseTypes', {
       SettlementRef: settlementRef,
     });
   }
