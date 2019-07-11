@@ -6,7 +6,7 @@ import { ItemsModule } from './api/items/items.module';
 import { OrdersModule } from './api/orders/orders.module';
 import { AdminFrontendMiddleware } from './admin.frontend.middleware';
 import { EShopFrontendMiddleware } from './e-shop.frontend.middleware';
-import { NovaPoshtaModule } from './nova-poshta/nova-poshta.module';
+import { NovaPoshtaModule } from './api/nova-poshta/nova-poshta.module';
 import { FirebaseModule } from './firebase/firebase.module';
 import { TranslatesModule } from './api/translates/translates.module';
 import { CategoriesModule } from './api/categories/categories.module';

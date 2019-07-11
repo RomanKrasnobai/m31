@@ -39,5 +39,9 @@
   "order.caption.last-name": "Прізвище",
   "order.caption.phone": "Телефон",
   "order.caption.email": "Електронна пошта",
-  "order.caption.address": "Адреса"
+  "order.caption.address": "Адреса",
+  "order.caption.payment-method": "Спосіб оплати",
+  "order.caption.card-number": "Номер карти",
+  "order.payment-method.cash": "Готівкою кур'єру",
+  "order.payment-method.private_bank_card": "На карту Приватбанку"
 }

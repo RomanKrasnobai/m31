@@ -39,5 +39,9 @@
   "order.caption.last-name": "Last Name",
   "order.caption.phone": "Phone",
   "order.caption.email": "E-Mail",
-  "order.caption.address": "Address"
+  "order.caption.address": "Address",
+  "order.caption.payment-method": "Payment method",
+  "order.caption.card-number": "Card Number",
+  "order.payment-method.cash": "Cash",
+  "order.payment-method.private_bank_card": "Private Bank"
 }

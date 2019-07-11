@@ -9,6 +9,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { Order } from '../order.model';
 import { OrdersService } from '../orders.service';
 import { AppService } from 'src/app/app.service';
+import { PaymentMethod } from '../payment-method.enum';
+import { NovaPoshtaService } from 'src/app/core/nova_poshta.service';
 
 @Component({
   selector: 'app-order-page',
@@ -24,8 +26,20 @@ export class OrderPageComponent implements OnInit {
     height: '14rem',
   };
 
-  public form: FormGroup;
-  public id: string;
+  paymentMethods = [
+    {
+      value: PaymentMethod.Cash,
+      displayValue: 'order.payment-method.cash'
+    },
+    {
+      value: PaymentMethod.PbCard,
+      displayValue: 'order.payment-method.private_bank_card'
+    },
+  ];
+
+  form: FormGroup;
+  id: string;
+  areas: any;
 
   private entity: Order;
   private mobileQuery: MediaQueryList;
@@ -55,10 +69,17 @@ export class OrderPageComponent implements OnInit {
     return this.appService.currencyMask;
   }
 
+  get cardNumberVisible(): boolean {
+    const paymentMethodCtrl = this.form && this.form.get('paymentMethod');
+    const paymentMethod = paymentMethodCtrl && paymentMethodCtrl.value as PaymentMethod;
+    return paymentMethod === PaymentMethod.PbCard;
+  }
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private ordersService: OrdersService,
+    private novaPoshtaService: NovaPoshtaService,
     private formBuilder: FormBuilder,
     private appService: AppService,
     private translate: TranslateService,
@@ -79,6 +100,7 @@ export class OrderPageComponent implements OnInit {
         setTimeout(_ => this.loadEntity(id), 100);
       }
     });
+    this.novaPoshtaService.getAreas().subscribe(areas => { this.areas = areas; console.log(areas); });
   }
 
   getCollSpan(value: number): number {

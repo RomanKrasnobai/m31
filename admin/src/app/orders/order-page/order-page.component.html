@@ -9,7 +9,9 @@
   </mat-card-header>
   <mat-card-content>
     <form [formGroup]="form">
-      <mat-accordion>
+      <mat-accordion [multi]="true">
+
+        <!-- #region Personal Data -->
         <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title>
@@ -21,6 +23,7 @@
           </mat-expansion-panel-header>
           <mat-grid-list [cols]="getCollSpan(4)" rowHeight="64px" formGroupName="customer">
     
+            <!-- #region Row 1 -->
             <mat-grid-tile [colspan]="getCollSpan(2)">
               <mat-form-field>
                 <input matInput type="text" [placeholder]="'order.caption.first-name' | translate" formControlName="firstName" />
@@ -32,7 +35,9 @@
                 <input matInput type="text" [placeholder]="'order.caption.last-name' | translate" formControlName="lastName" />
               </mat-form-field>
             </mat-grid-tile>
+            <!-- #endregion -->
 
+            <!-- #region Row 2-->
             <mat-grid-tile [colspan]="getCollSpan(2)">
               <mat-form-field>
                 <input matInput type="text" [placeholder]="'order.caption.phone' | translate" formControlName="phone" />
@@ -44,17 +49,21 @@
                 <input matInput type="text" [placeholder]="'order.caption.email' | translate" formControlName="email" />
               </mat-form-field>
             </mat-grid-tile>
+            <!-- #endregion -->
 
+            <!-- #region Row 3-->
             <mat-grid-tile [colspan]="getCollSpan(4)">
               <mat-form-field>
                 <input matInput type="text" [placeholder]="'order.caption.address' | translate" formControlName="address" />
               </mat-form-field>
             </mat-grid-tile>
+            <!-- #endregion -->
     
           </mat-grid-list>
 
         </mat-expansion-panel>
-
+        <!-- #endregion -->
+        <!-- #region Cart -->
         <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title>
@@ -70,7 +79,8 @@
           </mat-grid-list>
 
         </mat-expansion-panel>
-
+        <!-- #endregion -->
+        <!-- #region Delivery Info -->
         <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title>
@@ -86,8 +96,8 @@
           </mat-grid-list>
 
         </mat-expansion-panel>
-
-
+        <!-- #endregion -->
+        <!-- #region Payment Info -->
         <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title>
@@ -99,10 +109,32 @@
           </mat-expansion-panel-header>
 
           <mat-grid-list [cols]="getCollSpan(4)" rowHeight="64px">
-
+            <!-- #region Row 1-->
+            <mat-grid-tile [colspan]="getCollSpan(2)">
+              <mat-label>{{ 'order.caption.payment-method' | translate }}</mat-label>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="getCollSpan(2)">
+              <mat-form-field>
+                <mat-select formControlName="paymentMethod">
+                  <mat-option *ngFor="let paymentMethod of paymentMethods" [value]="paymentMethod.value">
+                    {{paymentMethod.displayValue | translate }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </mat-grid-tile>
+            <!-- #endregion -->
+            <!-- #region Row 2-->
+            <mat-grid-tile [colspan]="getCollSpan(2)" *ngIf="cardNumberVisible">
+              <mat-label>{{ 'order.caption.card-number' | translate }}</mat-label>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="getCollSpan(2)" *ngIf="cardNumberVisible">
+              <mat-label>XXXX-XXXX-XXXX-XXXX</mat-label>
+            </mat-grid-tile>
+            <!-- #endregion -->
           </mat-grid-list>
 
         </mat-expansion-panel>
+        <!-- #endregion -->
 
       </mat-accordion>
     </form>
