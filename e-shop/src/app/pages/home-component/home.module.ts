@@ -7,10 +7,12 @@ import {
   MatInputModule,
   MatFormFieldModule
 } from '@angular/material';
+import { ProductItemComponent } from './product-item/product-item.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
+    ProductItemComponent,
   ],
   imports: [
     CommonModule,
