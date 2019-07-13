@@ -1,10 +1,5 @@
 <div class="main-block">
-  <a>Усі товари</a>
-  <a>Горщик</a>
-  <a>Череп</a>
-  <a>Мильниця</a>
-  <a>Холдер</a>
-  <a>Візитниця</a>
-  <a>Підставка Моаї</a>
-  <a>Годинник</a>
+  <div *ngFor="let category of categories">
+    <a>{{ category.id }}</a>
+  </div>
 </div>

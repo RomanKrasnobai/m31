@@ -1,30 +1,30 @@
 <div class="main-block">
   <div>
-    <a href="https://www.instagram.com/m31studio/">
+    <a target="_blank" href="https://www.instagram.com/m31studio/">
       <img src="/assets/icons-social-media/inst.png" alt="inst" height="40">
     </a>
-    <a href="https://www.facebook.com/m31studio">
+    <a target="_blank" href="https://www.facebook.com/m31studio">
       <img src="/assets/icons-social-media/fb.png" alt="fb" height="40">
     </a>
-    <a href="http://T.me/m31studio">
+    <a target="_blank" href="http://T.me/m31studio">
       <img src="/assets/icons-social-media/telegram-icon-71185.png" alt="telegram" height="35">
     </a>
-    <a href="https://www.youtube.com/channel/UCgqa0V9R9Gbe0TpfSlsf2JA">
+    <a target="_blank" href="https://www.youtube.com/channel/UCgqa0V9R9Gbe0TpfSlsf2JA">
       <img src="/assets/icons-social-media/youtube.png" alt="youtube" height="40">
     </a>
   </div>
   <nav class="nav-bar">
-    <div class="cursor-pointer selected"routerLink="/home" routerLinkActive="active">
-      ГОЛОВНА
-    </div>
-    <div class="cursor-pointer selected" routerLink="/payment-delivery" routerLinkActive="active">
-      ОПЛАТА - ДОСТАВКА
-    </div>
-    <div class="cursor-pointer selected" routerLink="/contacts" routerLinkActive="active">
-      КОНТАКТИ
+    <div *ngFor="let route of routingTitle">
+      <div class="cursor-pointer selected" routerLink="{{ route.link }}" routerLinkActive="active">
+        {{ route.title | translate }}
+      </div>
     </div>
   </nav>
   <div>
-    UA ENG
+    <mat-select [formControl]="langControl">
+        <mat-option *ngFor="let lang of languages" [value]="lang.value">
+          {{ lang.title }}
+        </mat-option>
+    </mat-select>
   </div>
 </div>

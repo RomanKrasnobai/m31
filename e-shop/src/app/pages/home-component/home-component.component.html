@@ -1,29 +1,36 @@
-<app-header-component></app-header-component>
-  <div class="wrapper">
-    <app-left-menu></app-left-menu>
+<div class="wrapper">
+  <app-left-menu></app-left-menu>
 
-    <div class="main-block">
+  <div class="main-block">
 
-      <div class="head-wrap">
+    <div class="head-wrap">
 
-        <img src="/assets/logo.png" width="97" height="57">
+      <img src="/assets/logo.png" width="97" height="57">
 
-        <div class="right-block">
-          <mat-form-field>
-            <input matInput placeholder="Пошук">
-          </mat-form-field>
+      <div class="right-block">
+        <mat-form-field>
+          <input matInput placeholder="{{ 'home.placeholder' | translate }}">
+        </mat-form-field>
 
-          <img class="icon-glass" src="/assets/icons/magnifying-glass-logo-png-image-77170.png" width="22" height="22">
+        <img class="icon-glass" src="/assets/icons/magnifying-glass-logo-png-image-77170.png" width="22" height="22">
 
-          <a class="basket">
-            <img src="/assets/icons/34568b.png" width="40" height="40">
-          </a>
-        </div>
-
+        <a class="basket">
+          <img src="/assets/icons/34568b.png" width="40" height="40">
+        </a>
       </div>
 
-      <div>Всього товарів: {{ data?.length }}</div>
+    </div>
 
+    <div>Всього товарів: {{ data?.length }}</div>
+
+    <div *ngFor="let product of data">
+      <app-product-item [id]="product.id"
+                        [category]="product.category"
+                        [description]="product.description"
+                        [image]="product.image"
+                        [name]="product.name"
+                        [price]="product.price"
+      ></app-product-item>
     </div>
   </div>
-<app-footer-component></app-footer-component>
+</div>
