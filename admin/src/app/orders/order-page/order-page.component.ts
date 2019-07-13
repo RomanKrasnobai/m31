@@ -12,6 +12,9 @@ import { OrdersService } from '../orders.service';
 import { AppService } from 'src/app/app.service';
 import { PaymentMethod } from '../payment-method.enum';
 import { NovaPoshtaService } from 'src/app/core/nova_poshta.service';
+import { Area } from 'src/app/core/models/area.model';
+import { City } from 'src/app/core/models/city.model';
+import { Warehouse } from 'src/app/core/warehouse.model';
 
 @Component({
   selector: 'app-order-page',
@@ -49,8 +52,12 @@ export class OrderPageComponent implements OnInit {
   ];
 
   form: FormGroup;
+  novaPoshtaForm: FormGroup;
   id: string;
-  areas: any;
+  areas: Area[];
+  cities: City[];
+  warehouses: Warehouse[];
+  DeliveryMethods = DeliveryMethod;
 
   private entity: Order;
   private mobileQuery: MediaQueryList;
@@ -86,6 +93,12 @@ export class OrderPageComponent implements OnInit {
     return paymentMethod === PaymentMethod.PbCard;
   }
 
+  get deliveryMethod(): DeliveryMethod {
+    const deliveryInfoForm = this.form && this.form.get('deliveryInfo');
+    const deliveryMethod = deliveryInfoForm && deliveryInfoForm.get('method').value as DeliveryMethod;
+    return deliveryMethod;
+  }
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -103,7 +116,7 @@ export class OrderPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.initForm();
+    this.initForms();
     this.route.params.subscribe(params => {
       const { id } = params;
       if (id && id !== this.id) {
@@ -126,7 +139,7 @@ export class OrderPageComponent implements OnInit {
     this.save();
   }
 
-  private initForm() {
+  private initForms() {
     const fb = this.formBuilder;
     this.form = fb.group({
       customer: fb.group({
@@ -142,8 +155,22 @@ export class OrderPageComponent implements OnInit {
         info: [null, [Validators.required]],
         date: [new Date(), [Validators.required]],
       }, [Validators.required]),
-      paymentMethod: [null, [Validators.required]]
+      paymentMethod: [PaymentMethod.PbCard, [Validators.required]]
     });
+    this.novaPoshtaForm = fb.group({
+      area: [null, [Validators.required]],
+      city: [null, [Validators.required]],
+      warehouse: [null, [Validators.required]],
+      warehouseId: null,
+    });
+    this.setNovaPoshtaFormEventsHandlers();
+  }
+
+  private setNovaPoshtaFormEventsHandlers() {
+    this.novaPoshtaForm.get('area').valueChanges.subscribe(
+      areaRef => this.novaPoshtaService.getCities(areaRef)
+        .subscribe(cities => this.cities = cities)
+    );
   }
 
   private loadEntity(id: string) {

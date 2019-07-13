@@ -13,12 +13,10 @@ export class NovaPoshtaService {
     return this.http.get<any>('api/nova-poshta/areas');
   }
 
-  getCities(): Observable<any> {
-    return this.http.get<any>('api/nova-poshta/cities');
-  }
-
-  getCity(ref: string): Observable<any> {
-    return this.http.get<any>(`api/nova-poshta/city/${ref}`);
+  getCities(areaRef: string): Observable<any> {
+    return this.http.get<any>('api/nova-poshta/cities', {
+      params: { areaRef }
+    });
   }
 
   getSettlements(areaRef: string, regionRef: string): Observable<any> {

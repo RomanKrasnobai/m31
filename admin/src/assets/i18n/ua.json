@@ -43,8 +43,11 @@
   "order.caption.payment-method": "Спосіб оплати",
   "order.caption.card-number": "Номер карти",
   "order.caption.area": "Область",
+  "order.caption.city": "Місто",
+  "order.caption.warehouse": "Відділеня",
+  "order.caption.warehouse-id": "Номер відділеня",
   "order.caption.delivery-method": "Спосіб доставки",
-  "order.payment-method.cash": "Готівкою кур'єру",
+  "order.payment-method.cash": "Готівкою",
   "order.payment-method.private_bank_card": "На карту Приватбанку",
   "order.delivery-method.nova-poshta": "Нова Пошта",
   "order.delivery-method.pickup": "Самовивіз"

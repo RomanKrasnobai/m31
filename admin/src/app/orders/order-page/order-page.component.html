@@ -108,15 +108,32 @@
             </mat-grid-tile>
             <!-- #endregion -->
 
-            <mat-grid-tile [colspan]="getCollSpan(2)">
-              <mat-form-field>
-                <mat-select formControlName="info" [placeholder]="'order.caption.area' | translate">
-                  <mat-option *ngFor="let area of areas" [value]="area.Ref">
-                    {{area.Description | translate }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+            <mat-grid-tile [colspan]="getCollSpan(4)" [ngSwitch]="deliveryMethod">
+              
+              <div *ngSwitchCase="DeliveryMethods.Pickup">08132 м. Вишневе, вул. Святошинська 27-Д (Едісон)</div>
+
+              <form *ngSwitchCase="DeliveryMethods.NovaPoshta" [formGroup]="novaPoshtaForm" class="novaPoshtaForm">
+
+                <mat-form-field>
+                  <mat-select formControlName="area" [placeholder]="'order.caption.area' | translate">
+                    <mat-option *ngFor="let area of areas" [value]="area.Ref">
+                      {{area.Description | translate }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field *ngIf="novaPoshtaForm?.get('area').value">
+                  <mat-select formControlName="city" [placeholder]="'order.caption.city' | translate">
+                    <mat-option *ngFor="let city of cities" [value]="city.Ref">
+                      {{city.Description | translate }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+              </form>
             </mat-grid-tile>
+
+
 
           </mat-grid-list>
 
