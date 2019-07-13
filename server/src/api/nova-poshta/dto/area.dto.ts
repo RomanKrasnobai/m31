@@ -1,10 +1,10 @@
 import { ApiModelProperty } from '@nestjs/swagger';
 
 export class Area {
-  @ApiModelProperty()
+  @ApiModelProperty({ description: 'Идентификатор Области' })
   Ref: string;
-  @ApiModelProperty()
+  @ApiModelProperty({ description: 'Описание на украинском языке' })
   AreasCenter: string;
-  @ApiModelProperty()
+  @ApiModelProperty({ description: 'Идентификатор города, который является областным центром' })
   Description: string;
 }

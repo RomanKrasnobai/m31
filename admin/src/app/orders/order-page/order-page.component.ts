@@ -1,3 +1,4 @@
+import { DeliveryMethod } from './../delivery-info.model';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -34,6 +35,16 @@ export class OrderPageComponent implements OnInit {
     {
       value: PaymentMethod.PbCard,
       displayValue: 'order.payment-method.private_bank_card'
+    },
+  ];
+  deliveryMethods = [
+    {
+      value: DeliveryMethod.NovaPoshta,
+      displayValue: 'order.delivery-method.nova-poshta'
+    },
+    {
+      value: DeliveryMethod.Pickup,
+      displayValue: 'order.delivery-method.pickup'
     },
   ];
 
@@ -100,7 +111,7 @@ export class OrderPageComponent implements OnInit {
         setTimeout(_ => this.loadEntity(id), 100);
       }
     });
-    this.novaPoshtaService.getAreas().subscribe(areas => { this.areas = areas; console.log(areas); });
+    this.novaPoshtaService.getAreas().subscribe(areas => this.areas = areas);
   }
 
   getCollSpan(value: number): number {

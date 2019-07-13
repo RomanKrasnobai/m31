@@ -1,3 +1,4 @@
+import { Guid } from 'guid-typescript';
 import { Injectable, HttpService, Logger } from '@nestjs/common';
 import { Observable, from, of as observableOf } from 'rxjs';
 import { map, mergeMap, tap, switchMap } from 'rxjs/operators';
@@ -19,22 +20,26 @@ export class NovaPoshtaService {
   constructor(private readonly httpService: HttpService, private firebaseSvc: FirebaseService) {}
 
   getAreas(): Observable<Area[]> {
-    // return this.handleRequest('areas', 'Address', 'getAreas', {});
-    return this.callApi('Address', 'getAreas', {});
+    const docRef = this.getDocRef('areas');
+    return this.syncAreas()
+    .pipe(
+      mergeMap(
+        _ => docRef.collection('data').get(),
+      ),
+      map((r: any) => r.docs.map(d => d.data() as Area)),
+    );
   }
 
-  getCity(ref: string): Observable<City> {
-    /*return this.handleRequest('cities', 'Address', 'getCities', {
-      Ref: ref,
-    });*/
-    return this.callApi('Address', 'getCities', {
-      Ref: ref,
-    });
-  }
-
-  getCities(): Observable<City[]> {
-    // return this.handleRequest('cities', 'Address', 'getCities', {});
-    return this.callApi('Address', 'getCities', {});
+  getCities(areaRef: string): Observable<City[]> {
+    const docRef = this.getDocRef('cities');
+    const collectionRef = docRef.collection('data');
+    return this.syncCities()
+      .pipe(
+        mergeMap(
+          _ => areaRef ? collectionRef.where('Area', '==', areaRef).get() : collectionRef.get(),
+        ),
+        map((r: any) => r.docs.map(d => d.data() as City)),
+      );
   }
 
   getSettlements(areaRef: string, regionRef: string): Observable<Settlement[]> {
@@ -64,13 +69,16 @@ export class NovaPoshtaService {
   }
 
   getWarehouses(settlementRef: string): Observable<Warehouse[]> {
-    // return this.handleRequest('warehouses', 'AddressGeneral', 'getWarehouses', {
-    //   SettlementRef: settlementRef,
-    // });
-    return this.callApi('AddressGeneral', 'getWarehouses', {
-      SettlementRef: settlementRef,
-    });
+    const docRef = this.getDocRef('warehouses');
+    return this.syncWarehouses()
+      .pipe(
+        mergeMap(
+          _ => docRef.collection('data').get(),
+        ),
+        map((r: any) => r.docs.map(d => d.data() as Warehouse)),
+      );
   }
+
   getWarehouseTypes(settlementRef: string): Observable<Warehouse[]> {
     // return this.handleRequest('warehouses', 'AddressGeneral', 'getWarehouses', {
     //   SettlementRef: settlementRef,
@@ -97,7 +105,7 @@ export class NovaPoshtaService {
     return needSync;
   }
 
-  private getDocRef(documentName: string): any {
+  private getDocRef(documentName: string) {
     return this.firebaseSvc.db.collection('novaPoshta').doc(documentName);
   }
 
@@ -109,27 +117,76 @@ export class NovaPoshtaService {
     );
   }
 
-  private handleRequest<T>(documentName, modelName, calledMethod, methodProperties): Observable<T> {
-    const docRef = this.getDocRef(documentName);
+  private syncAreas(): Observable<void> {
+    const docRef = this.getDocRef('areas');
     return this.retrieveFirebaseData(docRef).pipe(
       mergeMap(resp => {
-        const needSync = this.checkNeedSync(resp.syncDate);
+        const needSync = !resp || this.checkNeedSync(resp.syncDate);
         if (needSync) {
-          return this.callApi(modelName, calledMethod, methodProperties)
+          return this.callApi<Area[]>('Address', 'getAreas', {})
             .pipe(
-              switchMap((response: AxiosResponse) => {
-                const data = response.data as T;
-                return from(
-                  docRef.set({ syncDate: new Date(), data }),
-                ).pipe(map(_ => data as T));
-              }),
+              switchMap(data => this.storeCollection<Area>(data, docRef)),
             );
         } else {
-          return observableOf(
-            resp.data as T,
-          );
+          return observableOf(null);
         }
       }),
+    );
+  }
+
+  private syncCities(): Observable<void> {
+    const docRef = this.getDocRef('cities');
+    return this.retrieveFirebaseData(docRef).pipe(
+      mergeMap(resp => {
+        const needSync = !resp || this.checkNeedSync(resp.syncDate);
+        if (needSync) {
+          return this.callApi<City[]>('Address', 'getCities', {})
+            .pipe(
+              switchMap(data => this.storeCollection<City>(data, docRef)),
+            );
+        } else {
+          return observableOf(null);
+        }
+      }),
+    );
+  }
+
+  private syncWarehouses(): Observable<void> {
+    const docRef = this.getDocRef('warehouses');
+    return this.retrieveFirebaseData(docRef).pipe(
+      mergeMap(resp => {
+        const needSync = !resp || this.checkNeedSync(resp.syncDate);
+        if (needSync) {
+          return this.callApi<Warehouse[]>('AddressGeneral', 'getWarehouses', {})
+            .pipe(
+              switchMap(data => this.storeCollection<Warehouse>(data, docRef)),
+            );
+        } else {
+          return observableOf(null);
+        }
+      }),
+    );
+  }
+
+  private storeCollection<T>(data: T[], docRef: any) {
+    Logger.log(`start storing ${data.length} items`);
+    const collectionRef = docRef.collection('data');
+    const batches = [];
+    while (data.length) {
+      batches.push(data.splice(0, 500));
+    }
+    const promises = [];
+    batches.forEach(batchData => {
+      const batch = docRef.firestore.batch();
+      batchData.forEach(item => batch.set(collectionRef.doc(Guid.create().toString()), item));
+      promises.push(batch.commit());
+    });
+
+    return from(
+      Promise.all(promises),
+    ).pipe(
+      mergeMap(_ => docRef.set({ syncDate: new Date() })),
+      map(_ => null),
     );
   }
 

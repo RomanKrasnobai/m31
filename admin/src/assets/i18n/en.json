@@ -42,6 +42,10 @@
   "order.caption.address": "Address",
   "order.caption.payment-method": "Payment method",
   "order.caption.card-number": "Card Number",
+  "order.caption.area": "Area",
+  "order.caption.delivery-method": "Delivery method",
   "order.payment-method.cash": "Cash",
-  "order.payment-method.private_bank_card": "Private Bank"
+  "order.payment-method.private_bank_card": "Private Bank",
+  "order.delivery-method.nova-poshta": "Nova poshta",
+  "order.delivery-method.pickup": "Pickup"
 }

@@ -93,6 +93,31 @@
 
           <mat-grid-list [cols]="getCollSpan(4)" rowHeight="64px" formGroupName="deliveryInfo">
 
+            <!-- #region Row 1-->
+            <mat-grid-tile [colspan]="getCollSpan(2)">
+              <mat-label>{{ 'order.caption.delivery-method' | translate }}</mat-label>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="getCollSpan(2)">
+              <mat-form-field>
+                <mat-select formControlName="method">
+                  <mat-option *ngFor="let deliveryMethod of deliveryMethods" [value]="deliveryMethod.value">
+                    {{ deliveryMethod.displayValue | translate }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </mat-grid-tile>
+            <!-- #endregion -->
+
+            <mat-grid-tile [colspan]="getCollSpan(2)">
+              <mat-form-field>
+                <mat-select formControlName="info" [placeholder]="'order.caption.area' | translate">
+                  <mat-option *ngFor="let area of areas" [value]="area.Ref">
+                    {{area.Description | translate }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </mat-grid-tile>
+
           </mat-grid-list>
 
         </mat-expansion-panel>

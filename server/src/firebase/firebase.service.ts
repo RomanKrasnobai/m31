@@ -4,6 +4,6 @@ import { Injectable, Inject } from '@nestjs/common';
 export class FirebaseService {
 
   constructor(
-    @Inject('Firestore') public db: any
+    @Inject('Firestore') public db: any,
   ) {}
 }
