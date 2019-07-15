@@ -1,0 +1,9 @@
+<mat-form-field>
+  <input matInput [placeholder]="placeholder | translate" [value]="getDisplayValue()" />
+  <button mat-button matSuffix mat-icon-button *ngIf="value" (click)="setValue(null)">
+    <mat-icon>clear</mat-icon>
+  </button>
+  <button mat-button matSuffix mat-icon-button (click)="openLookup()">
+    <mat-icon>search</mat-icon>
+  </button>
+</mat-form-field>

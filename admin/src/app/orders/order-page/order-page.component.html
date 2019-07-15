@@ -74,8 +74,33 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <mat-grid-list [cols]="getCollSpan(4)" rowHeight="64px" formGroupName="cart">
+          <button mat-raised-button color="primary" (click)="appendCartItemControl()">{{ 'common.append-button' | translate }}</button>
 
+          <mat-grid-list [cols]="getCollSpan(4)" rowHeight="64px" formArrayName="cart">
+            <mat-grid-tile [colspan]="getCollSpan(4)" *ngFor="let controlGroup of cartControls; let i = index" [formGroupName]="i">
+              <div class="cart-item-wrap">
+                <app-lookup-control
+                formControlName="item"
+                placeholder="order.caption.item"
+                caption="items.list.title"
+                [displayPropertyName]="orderItemsDisplayPropertyName"
+                [displayedColumns]="orderItemsDisplayedColumns">
+              </app-lookup-control>
+              <mat-form-field style="width: 6rem">
+                <input matInput disabled [placeholder]="'order.caption.item-price' | translate" [value]="controlGroup.value?.item?.price | currency:'UAH':'symbol-narrow'">
+              </mat-form-field>
+              <mat-form-field style="width: 6rem">
+                <input matInput type="number" min="1" step="1" [placeholder]="'order.caption.qty' | translate" formControlName="qty">
+              </mat-form-field>
+              <mat-form-field style="width: 6rem">
+                <input matInput disabled [placeholder]="'order.caption.price' | translate"
+                  [value]="(controlGroup.value?.item?.price * controlGroup.value?.qty) | currency:'UAH':'symbol-narrow'">
+              </mat-form-field>
+              <button mat-button matSuffix mat-icon-button (click)="removeCartItem(i)">
+                <mat-icon>delete</mat-icon>
+              </button>
+              </div>
+            </mat-grid-tile>
           </mat-grid-list>
 
         </mat-expansion-panel>
@@ -146,8 +171,6 @@
 
               </form>
             </mat-grid-tile>
-
-
 
           </mat-grid-list>
 

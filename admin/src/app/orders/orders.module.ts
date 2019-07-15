@@ -7,6 +7,8 @@ import { OrdersRoutingModule } from './orders-routing.module';
 import { OrderListComponent } from './order-list/order-list.component';
 import { OrderPageComponent } from './order-page/order-page.component';
 import { CoreTranslateService } from '../core/translate.service';
+import { LookupDataService } from '../core/lookup-dialog/lookup-data.service';
+import { OrderItemLookupDataService } from './order-items-lookup-data.service';
 
 @NgModule({
   declarations: [OrderListComponent, OrderPageComponent],
@@ -19,7 +21,8 @@ import { CoreTranslateService } from '../core/translate.service';
     })
   ],
   providers: [
-    { provide: TranslateService, useExisting: CoreTranslateService }
+    { provide: TranslateService, useExisting: CoreTranslateService },
+    { provide: LookupDataService, useClass: OrderItemLookupDataService }
   ],
 })
 export class OrdersModule { }

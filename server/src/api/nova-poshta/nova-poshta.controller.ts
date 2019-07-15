@@ -1,5 +1,5 @@
 import { Area } from './dto/area.dto';
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { ApiUseTags, ApiOperation } from '@nestjs/swagger';
 import { Observable } from 'rxjs';
 import { NovaPoshtaService } from './nova-poshta.service';
@@ -57,8 +57,8 @@ export class NovaPoshtaController {
     `,
     operationId: '56248fffa0fe4f0da0550ea8',
   })
-  @Get('settlements/:areaRef/:regionRef')
-  getSettlements(@Param('areaRef') areaRef: string, @Param('regionRef') regionRef: string): Observable<Settlement[]> {
+  @Get('settlements')
+  getSettlements(@Query('areaRef') areaRef: string, @Query('regionRef') regionRef: string): Observable<Settlement[]> {
     return this.svc.getSettlements(areaRef, regionRef);
   }
 

@@ -24,7 +24,12 @@ export class NovaPoshtaService {
   }
 
   getSettlements(areaRef: string, regionRef: string): Observable<Settlement[]> {
-    return this.http.get<Settlement[]>(`api/nova-poshta/settlements/${areaRef}/${regionRef}`);
+    return this.http.get<Settlement[]>('api/nova-poshta/settlements', {
+      params: {
+        areaRef,
+        regionRef
+      }
+    });
   }
 
   getWarehouses(cityRef: string): Observable<Warehouse[]> {

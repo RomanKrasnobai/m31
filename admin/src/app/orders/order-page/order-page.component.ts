@@ -1,6 +1,6 @@
 import { DeliveryMethod } from './../delivery-info.model';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray, AbstractControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { tap, filter } from 'rxjs/operators';
@@ -19,7 +19,7 @@ import { Warehouse } from 'src/app/core/warehouse.model';
 @Component({
   selector: 'app-order-page',
   templateUrl: './order-page.component.html',
-  styleUrls: ['./order-page.component.sass']
+  styleUrls: ['./order-page.component.sass'],
 })
 export class OrderPageComponent implements OnInit {
 
@@ -101,6 +101,24 @@ export class OrderPageComponent implements OnInit {
     const deliveryMethod = deliveryInfoForm && deliveryInfoForm.get('method').value as DeliveryMethod;
     return deliveryMethod;
   }
+
+  get cartControls(): FormGroup[] {
+    return this.form && (this.form.get('cart') as FormArray).controls as FormGroup[];
+  }
+
+  get orderItemsDisplayedColumns(): any[] {
+    return [
+      { path: `name.${this.lang.toLowerCase()};name`, title: 'items.caption.name' },
+      { path: 'price', title: 'items.caption.price' }
+    ];
+  }
+
+  get orderItemsDisplayPropertyName(): string {
+    return [
+      `name.${this.lang.toLowerCase()}`,
+      'name'
+    ].join(';');
+  }
   // #endregion
 
   constructor(
@@ -162,6 +180,14 @@ export class OrderPageComponent implements OnInit {
     return res.trim();
   }
 
+  appendCartItemControl() {
+    this.cartControls.push(this.getItemControlGroup());
+  }
+
+  removeCartItem(index: number) {
+    this.cartControls.splice(index, 1);
+  }
+
   private initForms() {
     const fb = this.formBuilder;
     this.form = fb.group({
@@ -187,6 +213,13 @@ export class OrderPageComponent implements OnInit {
       warehouseId: null,
     });
     this.setNovaPoshtaFormEventsHandlers();
+  }
+
+  private getItemControlGroup(values?) {
+    return this.formBuilder.group({
+      item: [null, [Validators.required]],
+      qty: [1, [Validators.min(1), Validators.required]]
+    });
   }
 
   private setNovaPoshtaFormEventsHandlers() {
@@ -252,6 +285,7 @@ export class OrderPageComponent implements OnInit {
   }
 
   private save() {
+    console.log(this.form.getRawValue());
     if (this.form.invalid) {
       return;
     }

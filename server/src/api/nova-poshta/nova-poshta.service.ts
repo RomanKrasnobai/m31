@@ -131,13 +131,13 @@ export class NovaPoshtaService {
           return this.callApi<City[]>('Address', 'getCities', {})
             .pipe(
               switchMap(data => {
-                const uniqCities: City[] = [];
+                /*const uniqCities: City[] = [];
                 data.forEach(city => {
                   if(!uniqCities.find(x => x.CityID === city.CityID)) {
                     uniqCities.push(city);
                   }
-                });
-                return this.storeCollection<City>(uniqCities, docRef);
+                });*/
+                return this.storeCollection<City>(data, docRef);
               }),
             );
         } else {

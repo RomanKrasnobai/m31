@@ -34,6 +34,8 @@ import { ImageControlComponent } from './image-control/image-control.component';
 import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
 import { MultiLangInputComponent } from './multi-lang-input/multi-lang-input.component';
 import { MultiLangTextareaComponent } from './multi-lang-textarea/multi-lang-textarea.component';
+import { LookupControlComponent } from './lookup-control/lookup-control.component';
+import { LookupDialogComponent } from './lookup-dialog/lookup-dialog.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, `admin/assets/i18n/`);
@@ -45,6 +47,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     AlertDialogComponent,
     MultiLangInputComponent,
     MultiLangTextareaComponent,
+    LookupControlComponent,
+    LookupDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -107,8 +111,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     AlertDialogComponent,
     MultiLangInputComponent,
     MultiLangTextareaComponent,
+    LookupControlComponent,
+    LookupDialogComponent,
   ],
-  entryComponents: [AlertDialogComponent],
+  entryComponents: [AlertDialogComponent, LookupDialogComponent],
   providers: [
     { provide: TranslateService, useClass: CoreTranslateService }
   ]
