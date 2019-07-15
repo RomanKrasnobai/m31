@@ -31,7 +31,7 @@ export class TranslateController {
   }
 
   @Delete(':locale')
-  delete(@Param('locale') locale: string): Observable<TranslateDto> {
+  delete(@Param('locale') locale: string): Observable<any> {
     return this.translateSvc.delete(locale);
   }
 

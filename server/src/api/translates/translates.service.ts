@@ -43,7 +43,7 @@ export class TranslateService {
     ).pipe(map(_ => dto));
   }
 
-  delete(locale: string): Observable<TranslateDto> {
+  delete(locale: string): Observable<any> {
     return from(
       this.collection.doc(locale).delete(),
     );
