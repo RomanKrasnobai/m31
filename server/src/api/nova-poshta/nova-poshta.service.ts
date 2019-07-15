@@ -1,6 +1,6 @@
 import { Injectable, HttpService, Logger } from '@nestjs/common';
-import { Observable, from, of as observableOf } from 'rxjs';
-import { map, mergeMap, tap, switchMap } from 'rxjs/operators';
+import { Observable, from, of as observableOf, throwError } from 'rxjs';
+import { map, mergeMap, tap, switchMap, catchError } from 'rxjs/operators';
 import { AxiosResponse } from 'axios';
 import { FirebaseService } from '../../firebase/firebase.service';
 import { Area } from './dto/area.dto';
@@ -83,7 +83,13 @@ export class NovaPoshtaService {
       calledMethod,
       methodProperties,
       apiKey: this.apiKey,
-    }).pipe(map((r: AxiosResponse<ApiResponse<T>>) => r.data.data));
+    }).pipe(
+      map((r: AxiosResponse<ApiResponse<T>>) => r.data.data),
+      catchError(e => {
+        Logger.error('Error while call Nova Poshta API', JSON.stringify(e), 'NOVA POSHTA API', true);
+        return throwError(e);
+      }),
+    );
   }
 
   private checkNeedSync(syncDate): boolean {
@@ -181,6 +187,10 @@ export class NovaPoshtaService {
     return from(
       Promise.all(promises),
     ).pipe(
+      catchError(e => {
+        Logger.error('Error while store Firebase Data', JSON.stringify(e), 'FIREBASE', true);
+        return throwError(e);
+      }),
       mergeMap(_ => docRef.set({ syncDate: new Date() })),
       map(_ => null),
     );
