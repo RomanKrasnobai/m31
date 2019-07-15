@@ -3,7 +3,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MediaMatcher } from '@angular/cdk/layout';
-import { tap } from 'rxjs/operators';
+import { tap, filter } from 'rxjs/operators';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -23,6 +23,7 @@ import { Warehouse } from 'src/app/core/warehouse.model';
 })
 export class OrderPageComponent implements OnInit {
 
+  // #region Fields: Public
   saveButtonDisabled: boolean;
 
   textareaStyle = {
@@ -58,11 +59,13 @@ export class OrderPageComponent implements OnInit {
   cities: City[];
   warehouses: Warehouse[];
   DeliveryMethods = DeliveryMethod;
+  // #endregion
 
   private entity: Order;
   private mobileQuery: MediaQueryList;
   private mobileQueryListener: (ev: MediaQueryListEvent) => void;
 
+  // #region Accessors: Public
   get saveButtonEnabled(): boolean {
     return this.form && this.form.valid;
   }
@@ -98,6 +101,7 @@ export class OrderPageComponent implements OnInit {
     const deliveryMethod = deliveryInfoForm && deliveryInfoForm.get('method').value as DeliveryMethod;
     return deliveryMethod;
   }
+  // #endregion
 
   constructor(
     private router: Router,
@@ -124,7 +128,6 @@ export class OrderPageComponent implements OnInit {
         setTimeout(_ => this.loadEntity(id), 100);
       }
     });
-    this.novaPoshtaService.getAreas().subscribe(areas => this.areas = areas);
   }
 
   getCollSpan(value: number): number {
@@ -137,6 +140,26 @@ export class OrderPageComponent implements OnInit {
 
   onSaveButtonClick() {
     this.save();
+  }
+
+  getCityDisplayValue(city: City): string {
+    let res = '';
+    if (city) {
+      const settlementType = city.SettlementTypeDescription || '';
+      const description = city.Description;
+      res = `${settlementType} ${description}`;
+    }
+    return res.trim();
+  }
+
+  getWarehouseDisplayValue(warehouse: Warehouse): string {
+    let res = '';
+    if (warehouse) {
+      const warehouseNumber = warehouse.Number || '';
+      const description = warehouse.Description;
+      res = `(${warehouseNumber}) ${description}`;
+    }
+    return res.trim();
   }
 
   private initForms() {
@@ -167,10 +190,55 @@ export class OrderPageComponent implements OnInit {
   }
 
   private setNovaPoshtaFormEventsHandlers() {
+    this.form.get('deliveryInfo').get('method').valueChanges.pipe(
+      filter(() => !this.areas)
+    ).subscribe(() => this.loadAreas());
     this.novaPoshtaForm.get('area').valueChanges.subscribe(
-      areaRef => this.novaPoshtaService.getCities(areaRef)
-        .subscribe(cities => this.cities = cities)
+      areaRef => this.loadCities(areaRef)
     );
+    this.novaPoshtaForm.get('city').valueChanges.subscribe(
+      cityRef => this.loadWarehouses(cityRef)
+    );
+  }
+
+  private loadAreas() {
+    this.loading = true;
+    this.novaPoshtaService.getAreas().subscribe(areas => {
+      this.areas = areas;
+      this.loading = false;
+    }, e => {
+      this.loading = false;
+      throw e;
+    });
+  }
+
+  private loadCities(areaRef: string) {
+    this.loading = true;
+    this.novaPoshtaService.getCities(areaRef).subscribe(cities => {
+      this.cities = this.sortCities(cities);
+      this.loading = false;
+    }, e => {
+      this.loading = false;
+      throw e;
+    });
+  }
+
+  private loadWarehouses(cityRef: string) {
+    this.loading = true;
+    this.novaPoshtaService.getWarehouses(cityRef).subscribe(warehouses => {
+      this.warehouses = warehouses;
+      this.loading = false;
+    }, e => {
+      this.loading = false;
+      throw e;
+    });
+  }
+
+  private sortCities(cities: City[]): City[] {
+    if (!Array.isArray(cities)) {
+      return cities;
+    }
+    return cities.sort((a, b) => a.Description.localeCompare(b.Description));
   }
 
   private loadEntity(id: string) {

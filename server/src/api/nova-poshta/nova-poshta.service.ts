@@ -1,4 +1,3 @@
-import { Guid } from 'guid-typescript';
 import { Injectable, HttpService, Logger } from '@nestjs/common';
 import { Observable, from, of as observableOf } from 'rxjs';
 import { map, mergeMap, tap, switchMap } from 'rxjs/operators';
@@ -10,6 +9,7 @@ import { Settlement } from './dto/settlement.dto';
 import { Warehouse } from './dto/warehouse.dto';
 import { ApiResponse } from './api-response';
 import { Street } from './dto/street.dto';
+import * as firebase from 'firebase';
 
 @Injectable()
 export class NovaPoshtaService {
@@ -26,7 +26,7 @@ export class NovaPoshtaService {
       mergeMap(
         _ => docRef.collection('data').get(),
       ),
-      map((r: any) => r.docs.map(d => d.data() as Area)),
+      map(r => r.docs.map(d => d.data() as Area)),
     );
   }
 
@@ -38,15 +38,11 @@ export class NovaPoshtaService {
         mergeMap(
           _ => areaRef ? collectionRef.where('Area', '==', areaRef).get() : collectionRef.get(),
         ),
-        map((r: any) => r.docs.map(d => d.data() as City)),
+        map(r => r.docs.map(d => d.data() as City)),
       );
   }
 
   getSettlements(areaRef: string, regionRef: string): Observable<Settlement[]> {
-    /*return this.handleRequest('settlements', 'AddressGeneral', 'getSettlements', {
-      AreaRef: areaRef,
-      RegionRef: regionRef,
-    });*/
     return this.callApi('AddressGeneral', 'getSettlements', {
       AreaRef: areaRef,
       RegionRef: regionRef,
@@ -68,24 +64,16 @@ export class NovaPoshtaService {
     });
   }
 
-  getWarehouses(settlementRef: string): Observable<Warehouse[]> {
+  getWarehouses(cityRef: string): Observable<Warehouse[]> {
     const docRef = this.getDocRef('warehouses');
+    const collectionRef = docRef.collection('data');
     return this.syncWarehouses()
       .pipe(
         mergeMap(
-          _ => docRef.collection('data').get(),
+          _ => cityRef ? collectionRef.where('CityRef', '==', cityRef).get() : collectionRef.get(),
         ),
-        map((r: any) => r.docs.map(d => d.data() as Warehouse)),
+        map(r => r.docs.map(d => d.data() as Warehouse)),
       );
-  }
-
-  getWarehouseTypes(settlementRef: string): Observable<Warehouse[]> {
-    // return this.handleRequest('warehouses', 'AddressGeneral', 'getWarehouses', {
-    //   SettlementRef: settlementRef,
-    // });
-    return this.callApi('AddressGeneral', 'getWarehouseTypes', {
-      SettlementRef: settlementRef,
-    });
   }
 
   private callApi<T>(modelName, calledMethod, methodProperties): Observable<T> {
@@ -101,7 +89,7 @@ export class NovaPoshtaService {
   private checkNeedSync(syncDate): boolean {
     const currentDateTime = new Date();
     const currentDate = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), currentDateTime.getDate());
-    const needSync = syncDate && syncDate.toDate().valueOf() < currentDate.valueOf();
+    const needSync = !syncDate || syncDate.toDate().valueOf() < currentDate.valueOf();
     return needSync;
   }
 
@@ -142,7 +130,15 @@ export class NovaPoshtaService {
         if (needSync) {
           return this.callApi<City[]>('Address', 'getCities', {})
             .pipe(
-              switchMap(data => this.storeCollection<City>(data, docRef)),
+              switchMap(data => {
+                const uniqCities: City[] = [];
+                data.forEach(city => {
+                  if(!uniqCities.find(x => x.CityID === city.CityID)) {
+                    uniqCities.push(city);
+                  }
+                });
+                return this.storeCollection<City>(uniqCities, docRef);
+              }),
             );
         } else {
           return observableOf(null);
@@ -168,7 +164,7 @@ export class NovaPoshtaService {
     );
   }
 
-  private storeCollection<T>(data: T[], docRef: any) {
+  private storeCollection<T>(data: T[], docRef: firebase.firestore.DocumentReference) {
     Logger.log(`start storing ${data.length} items`);
     const collectionRef = docRef.collection('data');
     const batches = [];
@@ -178,7 +174,7 @@ export class NovaPoshtaService {
     const promises = [];
     batches.forEach(batchData => {
       const batch = docRef.firestore.batch();
-      batchData.forEach(item => batch.set(collectionRef.doc(Guid.create().toString()), item));
+      batchData.forEach(item => batch.set(collectionRef.doc(item.Ref), item));
       promises.push(batch.commit());
     });
 

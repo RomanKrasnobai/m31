@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Area } from './models/area.model';
+import { City } from './models/city.model';
+import { Settlement } from './models/settlement.model';
+import { Warehouse } from './warehouse.model';
 
 @Injectable({
   providedIn: 'root'
@@ -9,21 +13,23 @@ export class NovaPoshtaService {
 
   constructor(private http: HttpClient) {}
 
-  getAreas(): Observable<any> {
-    return this.http.get<any>('api/nova-poshta/areas');
+  getAreas(): Observable<Area[]> {
+    return this.http.get<Area[]>('api/nova-poshta/areas');
   }
 
-  getCities(areaRef: string): Observable<any> {
-    return this.http.get<any>('api/nova-poshta/cities', {
+  getCities(areaRef?: string): Observable<City[]> {
+    return this.http.get<City[]>('api/nova-poshta/cities', {
       params: { areaRef }
     });
   }
 
-  getSettlements(areaRef: string, regionRef: string): Observable<any> {
-    return this.http.get<any>(`api/nova-poshta/settlements/${areaRef}/${regionRef}`);
+  getSettlements(areaRef: string, regionRef: string): Observable<Settlement[]> {
+    return this.http.get<Settlement[]>(`api/nova-poshta/settlements/${areaRef}/${regionRef}`);
   }
 
-  getWarehouses(settlementRef: string): Observable<any> {
-    return this.http.get<any>(`api/nova-poshta/warehouses/${settlementRef}`);
+  getWarehouses(cityRef: string): Observable<Warehouse[]> {
+    return this.http.get<Warehouse[]>('api/nova-poshta/warehouses', {
+      params: { cityRef }
+    });
   }
 }

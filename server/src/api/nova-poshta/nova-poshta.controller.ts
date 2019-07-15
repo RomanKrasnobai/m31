@@ -95,7 +95,7 @@ export class NovaPoshtaController {
     operationId: '556d8211a0fe4f08e8f7ce45',
   })
   @Get('warehouses')
-  getWarehouses(@Query('settlementRef') settlementRef: string): Observable<Warehouse[]> {
-    return this.svc.getWarehouses(settlementRef);
+  getWarehouses(@Query('cityRef') cityRef: string): Observable<Warehouse[]> {
+    return this.svc.getWarehouses(cityRef);
   }
 }

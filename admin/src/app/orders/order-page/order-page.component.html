@@ -91,13 +91,13 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <mat-grid-list [cols]="getCollSpan(4)" rowHeight="64px" formGroupName="deliveryInfo">
+          <mat-grid-list [cols]="4" rowHeight="64px" formGroupName="deliveryInfo">
 
             <!-- #region Row 1-->
-            <mat-grid-tile [colspan]="getCollSpan(2)">
+            <mat-grid-tile [colspan]="2">
               <mat-label>{{ 'order.caption.delivery-method' | translate }}</mat-label>
             </mat-grid-tile>
-            <mat-grid-tile [colspan]="getCollSpan(2)">
+            <mat-grid-tile [colspan]="2">
               <mat-form-field>
                 <mat-select formControlName="method">
                   <mat-option *ngFor="let deliveryMethod of deliveryMethods" [value]="deliveryMethod.value">
@@ -108,12 +108,13 @@
             </mat-grid-tile>
             <!-- #endregion -->
 
-            <mat-grid-tile [colspan]="getCollSpan(4)" [ngSwitch]="deliveryMethod">
+            <mat-grid-tile [colspan]="4" rowspan="4" [ngSwitch]="deliveryMethod">
               
               <div *ngSwitchCase="DeliveryMethods.Pickup">08132 м. Вишневе, вул. Святошинська 27-Д (Едісон)</div>
 
               <form *ngSwitchCase="DeliveryMethods.NovaPoshta" [formGroup]="novaPoshtaForm" class="novaPoshtaForm">
 
+                <!-- #region Area Selector-->
                 <mat-form-field>
                   <mat-select formControlName="area" [placeholder]="'order.caption.area' | translate">
                     <mat-option *ngFor="let area of areas" [value]="area.Ref">
@@ -121,14 +122,27 @@
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
+                <!-- #endregion -->
 
+                <!-- #region City Selector-->
                 <mat-form-field *ngIf="novaPoshtaForm?.get('area').value">
                   <mat-select formControlName="city" [placeholder]="'order.caption.city' | translate">
                     <mat-option *ngFor="let city of cities" [value]="city.Ref">
-                      {{city.Description | translate }}
+                      {{getCityDisplayValue(city) | translate }}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
+                <!-- #endregion -->
+
+                <!-- #region Warehouse Selector-->
+                <mat-form-field *ngIf="novaPoshtaForm?.get('city').value">
+                  <mat-select formControlName="warehouse" [placeholder]="'order.caption.warehouse' | translate">
+                    <mat-option *ngFor="let warehouse of warehouses" [value]="warehouse.Ref">
+                      {{getCityDisplayValue(warehouse) | translate }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <!-- #endregion -->
 
               </form>
             </mat-grid-tile>
