@@ -198,7 +198,6 @@ export class NovaPoshtaService {
   }
 
   private storeCollection<T>(data: T[], docRef: firebase.firestore.DocumentReference, doc: SyncDoc): Observable<any> {
-    throw Error('DEBUG');
     Logger.log(`start storing ${data.length} items`);
     const collectionRef = docRef.collection('data');
     const query$ = from(collectionRef.get())
