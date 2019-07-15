@@ -1,6 +1,6 @@
 import { Injectable, HttpService, Logger } from '@nestjs/common';
 import { Observable, from, of as observableOf, throwError } from 'rxjs';
-import { map, mergeMap, tap, switchMap, catchError } from 'rxjs/operators';
+import { map, mergeMap, tap, switchMap, catchError, timeout } from 'rxjs/operators';
 import { AxiosResponse } from 'axios';
 import { FirebaseService } from '../../firebase/firebase.service';
 import { Area } from './dto/area.dto';
@@ -11,6 +11,17 @@ import { ApiResponse } from './api-response';
 import { Street } from './dto/street.dto';
 import * as firebase from 'firebase';
 
+enum SyncType {
+  Monthly = 'Monthly',
+  Daily = 'Daily',
+}
+
+class SyncDoc {
+  syncDate: Date;
+  syncType: SyncType;
+}
+
+// tslint:disable-next-line:max-classes-per-file
 @Injectable()
 export class NovaPoshtaService {
 
@@ -92,10 +103,12 @@ export class NovaPoshtaService {
     );
   }
 
-  private checkNeedSync(syncDate): boolean {
+  private checkNeedSync(syncDate, syncType: SyncType): boolean {
     const currentDateTime = new Date();
     const currentDate = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), currentDateTime.getDate());
-    const needSync = !syncDate || syncDate.toDate().valueOf() < currentDate.valueOf();
+    const monthDate = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth() - 1, currentDateTime.getDate());
+    const checkDate = syncType === SyncType.Daily ? currentDate : monthDate;
+    const needSync = !syncDate || syncDate.toDate().valueOf() < checkDate.valueOf();
     return needSync;
   }
 
@@ -103,23 +116,33 @@ export class NovaPoshtaService {
     return this.firebaseSvc.db.collection('novaPoshta').doc(documentName);
   }
 
-  private retrieveFirebaseData(docRef: any): Observable<{syncDate, data}> {
+  private retrieveFirebaseData(docRef: any): Observable<SyncDoc> {
     return from(
       docRef.get(),
     ).pipe(
+      catchError(err => {
+        Logger.error('Error while getting Firebase Data', JSON.stringify(err), 'FIREBASE', true);
+        return observableOf(null);
+      }),
       map((r: any) => r.data()),
     );
   }
 
   private syncAreas(): Observable<void> {
     const docRef = this.getDocRef('areas');
-    return this.retrieveFirebaseData(docRef).pipe(
+    return this.retrieveFirebaseData(docRef)
+    .pipe(
       mergeMap(resp => {
-        const needSync = !resp || this.checkNeedSync(resp.syncDate);
+        const needSync = !resp || this.checkNeedSync(resp.syncDate, resp.syncType);
         if (needSync) {
           return this.callApi<Area[]>('Address', 'getAreas', {})
             .pipe(
-              switchMap(data => this.storeCollection<Area>(data, docRef)),
+              switchMap(data => this.storeCollection<Area>(data, docRef, resp).pipe(
+                catchError(err => {
+                  Logger.error('Error while store Firebase Data', JSON.stringify(err), 'FIREBASE', true);
+                  return observableOf(data);
+                }),
+              )),
             );
         } else {
           return observableOf(null);
@@ -132,18 +155,17 @@ export class NovaPoshtaService {
     const docRef = this.getDocRef('cities');
     return this.retrieveFirebaseData(docRef).pipe(
       mergeMap(resp => {
-        const needSync = !resp || this.checkNeedSync(resp.syncDate);
+        const needSync = !resp || this.checkNeedSync(resp.syncDate, resp.syncType);
         if (needSync) {
           return this.callApi<City[]>('Address', 'getCities', {})
             .pipe(
               switchMap(data => {
-                /*const uniqCities: City[] = [];
-                data.forEach(city => {
-                  if(!uniqCities.find(x => x.CityID === city.CityID)) {
-                    uniqCities.push(city);
-                  }
-                });*/
-                return this.storeCollection<City>(data, docRef);
+                return this.storeCollection<City>(data, docRef, resp).pipe(
+                  catchError(err => {
+                    Logger.error('Error while store Firebase Data', JSON.stringify(err), 'FIREBASE', true);
+                    return observableOf(data);
+                  }),
+                );
               }),
             );
         } else {
@@ -153,15 +175,20 @@ export class NovaPoshtaService {
     );
   }
 
-  private syncWarehouses(): Observable<void> {
+  private syncWarehouses(): Observable<Warehouse[]> {
     const docRef = this.getDocRef('warehouses');
     return this.retrieveFirebaseData(docRef).pipe(
       mergeMap(resp => {
-        const needSync = !resp || this.checkNeedSync(resp.syncDate);
+        const needSync = !resp || this.checkNeedSync(resp.syncDate, resp.syncType);
         if (needSync) {
           return this.callApi<Warehouse[]>('AddressGeneral', 'getWarehouses', {})
             .pipe(
-              switchMap(data => this.storeCollection<Warehouse>(data, docRef)),
+              switchMap(data => this.storeCollection<Warehouse>(data, docRef, resp).pipe(
+                catchError(err => {
+                  Logger.error('Error while store Firebase Data', JSON.stringify(err), 'FIREBASE', true);
+                  return observableOf(data);
+                }),
+              )),
             );
         } else {
           return observableOf(null);
@@ -170,28 +197,39 @@ export class NovaPoshtaService {
     );
   }
 
-  private storeCollection<T>(data: T[], docRef: firebase.firestore.DocumentReference) {
+  private storeCollection<T>(data: T[], docRef: firebase.firestore.DocumentReference, doc: SyncDoc): Observable<any> {
+    throw Error('DEBUG');
     Logger.log(`start storing ${data.length} items`);
     const collectionRef = docRef.collection('data');
-    const batches = [];
-    while (data.length) {
-      batches.push(data.splice(0, 500));
-    }
-    const promises = [];
-    batches.forEach(batchData => {
-      const batch = docRef.firestore.batch();
-      batchData.forEach(item => batch.set(collectionRef.doc(item.Ref), item));
-      promises.push(batch.commit());
-    });
+    const query$ = from(collectionRef.get())
+    .pipe(mergeMap(existingDataSnapshot => {
+      const existingData = existingDataSnapshot.docs.reduce((d, s) => ({...d, [s.id]: s.data()}), {});
+      const batches = [];
+      while (data.length) {
+        batches.push(data.splice(0, 500));
+      }
+      const promises = [];
+      batches.forEach(batchData => {
+        const batch = docRef.firestore.batch();
+        batchData.forEach(item => {
+          if (existingData[item.Ref]) {
+            batch.update(collectionRef.doc(item.Ref), item);
+          } else {
+            batch.set(collectionRef.doc(item.Ref), item);
+          }
+        });
+        promises.push(batch.commit());
+      });
+      return Promise.all(promises);
+    }));
 
-    return from(
-      Promise.all(promises),
-    ).pipe(
+    return query$.pipe(
       catchError(e => {
         Logger.error('Error while store Firebase Data', JSON.stringify(e), 'FIREBASE', true);
         return throwError(e);
       }),
-      mergeMap(_ => docRef.set({ syncDate: new Date() })),
+      timeout(1000),
+      mergeMap(_ => docRef.set({ ...doc, syncDate: new Date() })),
       map(_ => null),
     );
   }
