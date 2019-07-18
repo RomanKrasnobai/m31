@@ -227,7 +227,6 @@ export class NovaPoshtaService {
         Logger.error('Error while store Firebase Data', JSON.stringify(e), 'FIREBASE', true);
         return throwError(e);
       }),
-      timeout(1000),
       mergeMap(_ => docRef.set({ ...doc, syncDate: new Date() })),
       map(_ => null),
     );
