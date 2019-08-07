@@ -20,11 +20,13 @@
       </div>
     </div>
   </nav>
-  <div>
-    <mat-select [formControl]="langControl">
+  <div class="select-language">
+    <mat-form-field>
+      <mat-select [formControl]="langControl">
         <mat-option *ngFor="let lang of languages" [value]="lang.value">
           {{ lang.title }}
         </mat-option>
-    </mat-select>
+      </mat-select>
+    </mat-form-field>
   </div>
 </div>

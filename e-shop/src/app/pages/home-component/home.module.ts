@@ -5,7 +5,8 @@ import { HomeRoutingModule } from './home-routing.module';
 import { SharedComponentsModule } from 'src/app/shared-components/shared-components.module';
 import {
   MatInputModule,
-  MatFormFieldModule
+  MatFormFieldModule,
+  MatProgressSpinnerModule
 } from '@angular/material';
 import { ProductItemComponent } from './product-item/product-item.component';
 
@@ -19,7 +20,8 @@ import { ProductItemComponent } from './product-item/product-item.component';
     HomeRoutingModule,
     SharedComponentsModule,
     MatInputModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatProgressSpinnerModule
   ],
   providers: []
 })
