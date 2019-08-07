@@ -17,12 +17,7 @@
     <div>Всього товарів: {{ data?.length }}</div>
 
       <div *ngFor="let product of data">
-        <app-product-item [id]="product.id"
-                          [category]="product.category"
-                          [description]="product.description"
-                          [image]="product.image"
-                          [name]="product.name"
-                          [price]="product.price"
+        <app-product-item [product]="product"
         ></app-product-item>
       </div>
   </div>

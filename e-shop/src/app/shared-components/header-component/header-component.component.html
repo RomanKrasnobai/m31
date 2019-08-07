@@ -21,7 +21,7 @@
     </div>
   </nav>
   <div class="select-language">
-    <mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-select [formControl]="langControl">
         <mat-option *ngFor="let lang of languages" [value]="lang.value">
           {{ lang.title }}

@@ -7,15 +7,12 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class ProductItemComponent implements OnInit {
 
-  @Input() id: string;
-  @Input() category: any;
-  @Input() description: any;
-  @Input() image: any;
-  @Input() name: any;
-  @Input() price: number;
+  @Input() product;
+
   constructor() { }
 
   ngOnInit() {
+    console.log(this.product)
   }
 
 }
