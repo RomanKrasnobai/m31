@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
       .subscribe(
         items => {
           this.data = items;
-          console.log(this.data);
+         // console.log(this.data);
         }
       );
   }

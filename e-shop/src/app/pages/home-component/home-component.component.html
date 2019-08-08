@@ -16,9 +16,8 @@
     <mat-spinner class="spinner" [color]="'accent'" *ngIf="!data"></mat-spinner>
     <div>Всього товарів: {{ data?.length }}</div>
 
-      <div *ngFor="let product of data">
-        <app-product-item [product]="product"
-        ></app-product-item>
+      <div class="product-block" *ngFor="let product of data">
+        <app-product-item [product]="product"></app-product-item>
       </div>
   </div>
 </div>
