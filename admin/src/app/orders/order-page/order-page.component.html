@@ -135,12 +135,12 @@
 
             <mat-grid-tile [colspan]="4" rowspan="4" [ngSwitch]="deliveryMethod">
               
-              <div *ngSwitchCase="DeliveryMethods.Pickup">08132 м. Вишневе, вул. Святошинська 27-Д (Едісон)</div>
+              <div *ngSwitchCase="DeliveryMethods.Pickup">{{ env.pickUpAddress }}</div>
 
               <form *ngSwitchCase="DeliveryMethods.NovaPoshta" [formGroup]="novaPoshtaForm" class="novaPoshtaForm">
 
                 <!-- #region Area Selector-->
-                <mat-form-field>
+                <mat-form-field *ngIf="false">
                   <mat-select formControlName="area" [placeholder]="'order.caption.area' | translate">
                     <mat-option *ngFor="let area of areas" [value]="area.Ref">
                       {{area.Description | translate }}
@@ -150,22 +150,20 @@
                 <!-- #endregion -->
 
                 <!-- #region City Selector-->
-                <mat-form-field *ngIf="novaPoshtaForm?.get('area').value">
-                  <mat-select formControlName="city" [placeholder]="'order.caption.city' | translate">
-                    <mat-option *ngFor="let city of cities" [value]="city.Ref">
-                      {{getCityDisplayValue(city) | translate }}
-                    </mat-option>
-                  </mat-select>
+                <mat-form-field>
+                  <input [placeholder]="'order.caption.city' | translate" matInput formControlName="city" [matAutocomplete]="cityAutocomplete">
+                  <mat-autocomplete autoActiveFirstOption #cityAutocomplete="matAutocomplete" (optionSelected)="onCitySelected($event)">
+                    <mat-option *ngFor="let city of cities$ | async" [value]="city">{{city}}</mat-option>
+                  </mat-autocomplete>
                 </mat-form-field>
                 <!-- #endregion -->
 
                 <!-- #region Warehouse Selector-->
                 <mat-form-field *ngIf="novaPoshtaForm?.get('city').value">
-                  <mat-select formControlName="warehouse" [placeholder]="'order.caption.warehouse' | translate">
-                    <mat-option *ngFor="let warehouse of warehouses" [value]="warehouse.Ref">
-                      {{getCityDisplayValue(warehouse) | translate }}
-                    </mat-option>
-                  </mat-select>
+                  <input [placeholder]="'order.caption.warehouse' | translate" matInput formControlName="warehouse" [matAutocomplete]="warehouseAutocomplete">
+                  <mat-autocomplete autoActiveFirstOption #warehouseAutocomplete="matAutocomplete" (optionSelected)="onWarehouseSelected($event)">
+                    <mat-option *ngFor="let warehouse of warehouses$ | async" [value]="warehouse">{{warehouse}}</mat-option>
+                  </mat-autocomplete>
                 </mat-form-field>
                 <!-- #endregion -->
 
@@ -207,7 +205,7 @@
               <mat-label>{{ 'order.caption.card-number' | translate }}</mat-label>
             </mat-grid-tile>
             <mat-grid-tile [colspan]="getCollSpan(2)" *ngIf="cardNumberVisible">
-              <mat-label>XXXX-XXXX-XXXX-XXXX</mat-label>
+              <mat-label>{{ env.pbCardNumber }}</mat-label>
             </mat-grid-tile>
             <!-- #endregion -->
           </mat-grid-list>

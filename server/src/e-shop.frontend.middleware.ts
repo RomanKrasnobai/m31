@@ -26,7 +26,7 @@ export class EShopFrontendMiddleware implements NestMiddleware {
       next();
     } else if (allowedExt.filter(ext => url.indexOf(ext) > 0).length > 0) {
       // it has a file extension --> resolve the file
-      res.sendFile(resolvePath(url));
+      res.sendFile(resolvePath(url), e => res.send(e));
     } else {
       // in all other cases, redirect to the index.html!
       res.sendFile(resolvePath('index.html'));

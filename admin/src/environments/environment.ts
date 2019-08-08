@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  pickUpAddress: '08132 м. Вишневе, вул. Святошинська 27-Д (Едісон)',
+  pbCardNumber: 'XXXX-XXXX-XXXX-XXXX'
 };
 
 /*

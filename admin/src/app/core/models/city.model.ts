@@ -19,4 +19,8 @@ export class City {
   IsBranch: string;
   PreventEntryNewStreetsUser?: any;
   SpecialCashCheck: number;
+
+  toString() {
+    return `${this.SettlementTypeDescription} ${this.Description}`.trim();
+  }
 }

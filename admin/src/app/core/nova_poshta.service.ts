@@ -19,7 +19,7 @@ export class NovaPoshtaService {
 
   getCities(areaRef?: string): Observable<City[]> {
     return this.http.get<City[]>('api/nova-poshta/cities', {
-      params: { areaRef }
+      params: areaRef ? { areaRef } : null
     });
   }
 
@@ -34,7 +34,7 @@ export class NovaPoshtaService {
 
   getWarehouses(cityRef: string): Observable<Warehouse[]> {
     return this.http.get<Warehouse[]>('api/nova-poshta/warehouses', {
-      params: { cityRef }
+      params: cityRef ? { cityRef } : null
     });
   }
 }

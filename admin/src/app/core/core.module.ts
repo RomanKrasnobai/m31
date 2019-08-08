@@ -27,6 +27,7 @@ import {
   MatProgressSpinnerModule,
   MatSortModule,
   MatTabsModule,
+  MatAutocompleteModule,
 } from '@angular/material';
 
 import { CoreTranslateService } from './translate.service';
@@ -74,6 +75,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatExpansionModule,
     MatSortModule,
     MatTabsModule,
+    MatAutocompleteModule,
 
     TranslateModule.forRoot({
       loader: { provide: TranslateLoader, useFactory: HttpLoaderFactory, deps: [HttpClient] },
@@ -106,6 +108,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatExpansionModule,
     MatSortModule,
     MatTabsModule,
+    MatAutocompleteModule,
 
     ImageControlComponent,
     AlertDialogComponent,
