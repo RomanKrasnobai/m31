@@ -3,7 +3,8 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, AbstractControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MediaMatcher } from '@angular/cdk/layout';
-import { tap, filter } from 'rxjs/operators';
+import { MatAutocompleteSelectedEvent } from '@angular/material';
+import { tap, filter, map } from 'rxjs/operators';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -15,6 +16,8 @@ import { NovaPoshtaService } from 'src/app/core/nova_poshta.service';
 import { Area } from 'src/app/core/models/area.model';
 import { City } from 'src/app/core/models/city.model';
 import { Warehouse } from 'src/app/core/warehouse.model';
+import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-order-page',
@@ -25,6 +28,7 @@ export class OrderPageComponent implements OnInit {
 
   // #region Fields: Public
   saveButtonDisabled: boolean;
+  env = environment;
 
   textareaStyle = {
     resize: 'none',
@@ -59,6 +63,8 @@ export class OrderPageComponent implements OnInit {
   cities: City[];
   warehouses: Warehouse[];
   DeliveryMethods = DeliveryMethod;
+  cities$: Observable<City[]>;
+  warehouses$: Observable<Warehouse[]>;
   // #endregion
 
   private entity: Order;
@@ -146,6 +152,42 @@ export class OrderPageComponent implements OnInit {
         setTimeout(_ => this.loadEntity(id), 100);
       }
     });
+    this.cities$ = this.getCitiesStream();
+    this.warehouses$ = this.getWarehousesStream();
+  }
+
+  getCitiesStream(): Observable<City[]> {
+    return this.novaPoshtaForm.get('city').valueChanges.pipe(
+      filter(
+        () => Array.isArray(this.cities)
+      ),
+      map(
+        inputCity => inputCity ? this.getFilteredCities(inputCity) : this.cities.slice())
+      );
+  }
+
+  getFilteredCities(inputCity): City[] {
+    const reqExp = new RegExp(inputCity, 'i');
+    return this.cities
+      .filter(
+        city => reqExp.test(city.Description) || reqExp.test(city.DescriptionRu)
+    );
+  }
+
+  getWarehousesStream(): Observable<Warehouse[]> {
+    return this.novaPoshtaForm.get('warehouse').valueChanges.pipe(
+      filter(() => Array.isArray(this.warehouses)),
+      map(inputWarehouse => inputWarehouse ? this.getFilteredWarehouses(inputWarehouse) : this.warehouses.slice()));
+  }
+
+  getFilteredWarehouses(inputWarehouse): Warehouse[] {
+    const reqExp = new RegExp(inputWarehouse, 'i');
+    return this.warehouses
+      .filter(
+        warehouse => reqExp.test(warehouse.Number.toString())
+          || reqExp.test(warehouse.Description)
+          || reqExp.test(warehouse.DescriptionRu)
+      );
   }
 
   getCollSpan(value: number): number {
@@ -160,32 +202,22 @@ export class OrderPageComponent implements OnInit {
     this.save();
   }
 
-  getCityDisplayValue(city: City): string {
-    let res = '';
-    if (city) {
-      const settlementType = city.SettlementTypeDescription || '';
-      const description = city.Description;
-      res = `${settlementType} ${description}`;
-    }
-    return res.trim();
-  }
-
-  getWarehouseDisplayValue(warehouse: Warehouse): string {
-    let res = '';
-    if (warehouse) {
-      const warehouseNumber = warehouse.Number || '';
-      const description = warehouse.Description;
-      res = `(${warehouseNumber}) ${description}`;
-    }
-    return res.trim();
-  }
-
   appendCartItemControl() {
     this.cartControls.push(this.getItemControlGroup());
   }
 
   removeCartItem(index: number) {
     this.cartControls.splice(index, 1);
+  }
+
+  onCitySelected(event: MatAutocompleteSelectedEvent) {
+    const city = event.option.value as City;
+    this.loadWarehouses(city.Ref);
+  }
+
+  onWarehouseSelected(event: MatAutocompleteSelectedEvent) {
+    const warehouse = event.option.value as Warehouse;
+    // TODO: Display Warehouse information
   }
 
   private initForms() {
@@ -224,20 +256,18 @@ export class OrderPageComponent implements OnInit {
 
   private setNovaPoshtaFormEventsHandlers() {
     this.form.get('deliveryInfo').get('method').valueChanges.pipe(
-      filter(() => !this.areas)
-    ).subscribe(() => this.loadAreas());
-    this.novaPoshtaForm.get('area').valueChanges.subscribe(
-      areaRef => this.loadCities(areaRef)
-    );
-    this.novaPoshtaForm.get('city').valueChanges.subscribe(
-      cityRef => this.loadWarehouses(cityRef)
-    );
+      filter(() => this.deliveryMethod === this.DeliveryMethods.NovaPoshta && !this.cities)
+    ).subscribe(() => {
+      this.novaPoshtaForm.patchValue({ city: null });
+      this.loadCities();
+    });
   }
 
   private loadAreas() {
     this.loading = true;
     this.novaPoshtaService.getAreas().subscribe(areas => {
       this.areas = areas;
+      this.novaPoshtaForm.patchValue({ city: null });
       this.loading = false;
     }, e => {
       this.loading = false;
@@ -245,10 +275,19 @@ export class OrderPageComponent implements OnInit {
     });
   }
 
-  private loadCities(areaRef: string) {
+  private loadCities(areaRef?: string) {
     this.loading = true;
-    this.novaPoshtaService.getCities(areaRef).subscribe(cities => {
+    this.novaPoshtaService.getCities(areaRef)
+    .pipe(
+      map(
+        data => data.map(
+          cityRaw => Object.assign(new City(), cityRaw)
+        )
+      )
+    )
+    .subscribe(cities => {
       this.cities = this.sortCities(cities);
+      this.novaPoshtaForm.patchValue({ warehouse: null, city: null });
       this.loading = false;
     }, e => {
       this.loading = false;
@@ -258,8 +297,17 @@ export class OrderPageComponent implements OnInit {
 
   private loadWarehouses(cityRef: string) {
     this.loading = true;
-    this.novaPoshtaService.getWarehouses(cityRef).subscribe(warehouses => {
+    this.novaPoshtaService.getWarehouses(cityRef)
+    .pipe(
+      map(
+        data => data.map(
+          warehouseRaw => Object.assign(new Warehouse(), warehouseRaw)
+        )
+      )
+    )
+    .subscribe(warehouses => {
       this.warehouses = warehouses;
+      this.novaPoshtaForm.patchValue({ warehouse: null });
       this.loading = false;
     }, e => {
       this.loading = false;

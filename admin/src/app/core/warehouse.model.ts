@@ -42,4 +42,8 @@ export class Warehouse {
     Saturday: string;
     Sunday: string;
   };
+
+  toString() {
+    return `${this.Description}`.trim();
+  }
 }
