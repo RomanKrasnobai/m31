@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import { MatDialogRef} from "@angular/material";
+import {HomeComponent} from "../home-component/home-component.component";
 
 @Component({
   selector: 'app-basket-component',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BasketComponentComponent implements OnInit {
 
-  constructor() { }
+  order: any;
+  constructor(public dialogRef: MatDialogRef<HomeComponent>,
+  ) { }
 
   ngOnInit() {
+    this.order = JSON.parse(localStorage.getItem('productsOrder'));
+  }
+
+  close() {
+    this.dialogRef.close();
   }
 
 }

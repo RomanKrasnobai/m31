@@ -1,3 +1,6 @@
-<p>
-  basket-component works!
-</p>
+<div>
+  <span class="cursor-pointer" (click)="close()">&#10006;</span>
+  <div *ngFor="let product of order">
+    {{product.id}}
+  </div>
+</div>
