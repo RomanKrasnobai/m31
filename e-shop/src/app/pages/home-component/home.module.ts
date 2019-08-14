@@ -6,7 +6,7 @@ import { SharedComponentsModule } from 'src/app/shared-components/shared-compone
 import {
   MatInputModule,
   MatFormFieldModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule, MatButtonModule
 } from '@angular/material';
 import { ProductItemComponent } from './product-item/product-item.component';
 
@@ -21,7 +21,8 @@ import { ProductItemComponent } from './product-item/product-item.component';
     SharedComponentsModule,
     MatInputModule,
     MatFormFieldModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatButtonModule
   ],
   providers: []
 })
