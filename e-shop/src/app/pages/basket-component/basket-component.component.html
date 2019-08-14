@@ -1,6 +1,27 @@
-<div>
-  <span class="cursor-pointer" (click)="close()">&#10006;</span>
-  <div *ngFor="let product of order">
-    {{product.id}}
+<div class="head">
+  <div class="head-name">Кошик</div>
+  <div class="cursor-pointer" (click)="close()">&#10006;</div>
+</div>
+
+<div class="product-block" *ngFor="let product of order">
+  <div class="product-block-part">
+    <div>
+      <i class="material-icons">
+        delete_outline
+      </i>
+    </div>
+    <img src="{{product.image[0]}}" width="80" alt="product">
+    <div>{{product.name.ua}}</div>
   </div>
+
+  <div class="product-block-part">
+    <div>{{product.price}}</div>
+  </div>
+</div>
+
+<div class="summary">Всього:</div>
+
+<div class="bottom-btn">
+  <button mat-stroked-button>Продовжити покупки</button>
+  <button mat-stroked-button color="primary">Оформити замовлення</button>
 </div>

@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit {
 
   openDialog() {
     const dialogRef = this.dialog.open(BasketComponentComponent, {
-      width: '250px',
+      width: '550px',
     });
   }
 }

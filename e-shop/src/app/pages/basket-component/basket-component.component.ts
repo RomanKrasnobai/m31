@@ -15,6 +15,7 @@ export class BasketComponentComponent implements OnInit {
 
   ngOnInit() {
     this.order = JSON.parse(localStorage.getItem('productsOrder'));
+    console.log(this.order)
   }
 
   close() {
