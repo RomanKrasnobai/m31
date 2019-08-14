@@ -15,13 +15,13 @@
   </div>
 
   <div class="product-block-part">
-    <div>{{product.price}}</div>
+    <div>{{product.price}} грн</div>
   </div>
 </div>
 
-<div class="summary">Всього:</div>
+<div class="summary">Всього: {{order[0].price}} грн</div>
 
 <div class="bottom-btn">
-  <button mat-stroked-button>Продовжити покупки</button>
+  <button mat-stroked-button (click)="close()">Продовжити покупки</button>
   <button mat-stroked-button color="primary">Оформити замовлення</button>
 </div>
