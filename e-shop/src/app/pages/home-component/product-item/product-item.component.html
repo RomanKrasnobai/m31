@@ -1,7 +1,7 @@
 <div class="main-block">
   <div class="product">
-    <div>{{product.categoryCode}}</div>
-    <img src="{{product.image[0]}}" width="120" alt="product">
+    <div>{{ product.name.ua }}</div>
+    <img src="{{ product.image[0] }}" width="120" alt="product">
   </div>
   <div class="to-basket-btn">
     <button mat-raised-button (click)="toBasket(product)">У Кошик</button>

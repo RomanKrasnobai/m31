@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {OrdersService} from "../../../services/orders.service";
-import {Item} from "../../../models/item";
+import {OrderBasket} from "../../../models/OrderBasket";
 
 @Component({
   selector: 'app-product-item',
@@ -10,7 +9,8 @@ import {Item} from "../../../models/item";
 export class ProductItemComponent implements OnInit {
 
   @Input() product;
-  orders: Array<Item>  = [];
+  orders: Array<OrderBasket> = [];
+
   constructor() { }
 
   ngOnInit() {
@@ -18,9 +18,11 @@ export class ProductItemComponent implements OnInit {
   }
 
   toBasket(product) {
-    this.orders.push(product);
-    console.log(this.orders);
+    if (product && localStorage.getItem('productsOrder') !== 'undefined') {
+      this.orders = JSON.parse(localStorage.getItem('productsOrder')) ;
+      this.orders.push(product);
+      localStorage.setItem('productsOrder', JSON.stringify(this.orders));
+    }
 
-    localStorage.setItem('productsOrder', JSON.stringify(this.orders));
   }
 }
