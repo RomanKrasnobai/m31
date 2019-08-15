@@ -7,13 +7,11 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpLoaderFactory, SharedComponentsModule} from './shared-components/shared-components.module';
 import {TranslateLoader, TranslateModule, TranslateService} from '@ngx-translate/core';
 import {CoreTranslateService} from './core/translate.service';
-import { SummaryComponentComponent } from './pages/summary-component/summary-component.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    SummaryComponentComponent,
   ],
   imports: [
     HttpClientModule,

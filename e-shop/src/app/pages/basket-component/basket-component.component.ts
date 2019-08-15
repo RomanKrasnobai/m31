@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {MatDialogRef} from "@angular/material";
 import {HomeComponent} from "../home-component/home-component.component";
 import {OrderBasket} from "../../models/OrderBasket";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-basket-component',
@@ -12,11 +13,11 @@ export class BasketComponentComponent implements OnInit {
 
   order: Array<OrderBasket>;
 
-  constructor(public dialogRef: MatDialogRef<HomeComponent>,) { }
+  constructor(private dialogRef: MatDialogRef<HomeComponent>,
+              private router: Router) { }
 
   ngOnInit() {
     this.order = JSON.parse(localStorage.getItem('productsOrder'));
-    console.log(this.order);
   }
 
   removeProductFromBasket(product) {
@@ -33,6 +34,11 @@ export class BasketComponentComponent implements OnInit {
       sum += item.price;
     });
     return sum;
+  }
+
+  goToSummary() {
+    this.router.navigate(['/summary']);
+    this.close();
   }
 
   close() {

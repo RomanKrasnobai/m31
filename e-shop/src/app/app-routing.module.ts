@@ -14,6 +14,10 @@ const routes: Routes = [
     path: 'payment-delivery',
     loadChildren: './pages/payment-delivery-component/payment-delivery.module#PaymentDeliveryModule'
   },
+  {
+    path: 'summary',
+    loadChildren: './pages/summary-component/summary-component.module#SummaryComponentModule'
+  },
   // {
   //   path: 'basket-page',
   //   loadChildren: './pages/basket-component/basket-component.module#BasketComponentModuleModule'

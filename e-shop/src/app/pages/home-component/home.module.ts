@@ -6,7 +6,9 @@ import { SharedComponentsModule } from 'src/app/shared-components/shared-compone
 import {
   MatInputModule,
   MatFormFieldModule,
-  MatProgressSpinnerModule, MatButtonModule, MatDialogModule
+  MatProgressSpinnerModule,
+  MatButtonModule,
+  MatDialogModule
 } from '@angular/material';
 import { ProductItemComponent } from './product-item/product-item.component';
 import {BasketComponentComponent} from "../basket-component/basket-component.component";

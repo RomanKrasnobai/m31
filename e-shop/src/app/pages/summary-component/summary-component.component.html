@@ -1,3 +1,27 @@
-<p>
-  summary-component works!
-</p>
+<div class="main-block">
+  <div class="summary-form">
+    <mat-form-field>
+      <input matInput placeholder="Місто">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <input matInput placeholder="Прізвище та ім'я">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <input matInput placeholder="Телефон">
+    </mat-form-field>
+  </div>
+
+  <div>
+    <h3>Ваше замовлення</h3>
+    <div class="product-block" *ngFor="let product of order">
+      <img src="{{ product.image[0] }}" alt="product" width="130">
+      <div>{{ product.name }}</div>
+      <div>{{ product.price }}</div>
+    </div>
+    <div>Всього: {{ getSummaryBasket() }}</div>
+  </div>
+</div>
