@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {OrderBasket} from "../../models/OrderBasket";
+import {FormBuilder, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-summary-component',
@@ -9,13 +10,18 @@ import {OrderBasket} from "../../models/OrderBasket";
 export class SummaryComponent implements OnInit {
 
   order: Array<OrderBasket>;
+  orderForm: FormGroup;
 
-  constructor() { }
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
     this.order = JSON.parse(localStorage.getItem('productsOrder'));
     console.log('sum',this.order);
   }
+
+  // formValidation() {
+  //   this.orderForm = this.fb.group()
+  // }
 
   getSummaryBasket() {
     let sum = 0;

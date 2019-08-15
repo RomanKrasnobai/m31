@@ -3,9 +3,13 @@ import {CommonModule} from "@angular/common";
 import {SharedComponentsModule} from "../../shared-components/shared-components.module";
 import {SummaryComponent} from "./summary-component.component";
 import {SummaryRoutingModule} from "./summary-routing.module";
-import {MatFormFieldModule,
-        MatInputModule,
-        } from "@angular/material";
+import {
+  MatCheckboxModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatSelectModule,
+} from "@angular/material";
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -17,6 +21,9 @@ import {MatFormFieldModule,
     SharedComponentsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    ReactiveFormsModule,
   ],
   providers: []
 })

@@ -1,22 +1,72 @@
 <div class="main-block">
-  <div class="summary-form">
-    <mat-form-field>
-      <input matInput placeholder="Місто">
-    </mat-form-field>
-  </div>
-  <div>
-    <mat-form-field>
-      <input matInput placeholder="Прізвище та ім'я">
-    </mat-form-field>
-  </div>
-  <div>
-    <mat-form-field>
-      <input matInput placeholder="Телефон">
-    </mat-form-field>
-  </div>
+  <form [formGroup]="orderForm">
+    <div class="data-of-saler">
+      <div class="column-title">
+        <h2>Дані покупця</h2>
+        <span>
+          <i class="material-icons">
+            chevron_right</i>
+        </span>
+      </div>
+      <div>
+        <mat-form-field>
+          <input type="text" matInput placeholder="Місто" formControlName="city">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input type="text" matInput placeholder="Прізвище та ім'я" formControlName="name">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input type="number" matInput placeholder="Телефон" formControlName="phone">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="delivery-block">
+      <div class="column-title">
+        <h3>Доставка</h3>
+        <span>
+            <i class="material-icons">
+              chevron_right
+            </i>
+          </span>
+      </div>
+      <div>
+        <mat-form-field>
+          <mat-checkbox formControlName="npPost">
+            Відділення Нової Пошти
+          </mat-checkbox>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <mat-checkbox formControlName="npCourier">
+            Кур'єрська доставка Новою Поштою
+          </mat-checkbox>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <mat-checkbox formControlName="ukrPost">
+            Відділення Укр Пошти
+          </mat-checkbox>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
 
   <div>
-    <h3>Ваше замовлення</h3>
+    <div class="column-title">
+      <h3>Ваше замовлення</h3>
+      <span>
+        <i class="material-icons">
+          chevron_right
+        </i>
+      </span>
+    </div>
     <div class="product-block" *ngFor="let product of order">
       <img src="{{ product.image[0] }}" alt="product" width="130">
       <div>{{ product.name }}</div>
