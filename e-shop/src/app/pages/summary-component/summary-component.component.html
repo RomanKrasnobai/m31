@@ -10,7 +10,10 @@
       </div>
       <div>
         <mat-form-field>
-          <input type="text" matInput placeholder="Місто" formControlName="city">
+          <mat-label>Місто</mat-label>
+          <mat-select  formControlName="city">
+            <mat-option></mat-option>
+          </mat-select>
         </mat-form-field>
       </div>
       <div>
@@ -35,24 +38,26 @@
           </span>
       </div>
       <div>
-        <mat-form-field>
-          <mat-checkbox formControlName="npPost">
-            Відділення Нової Пошти
-          </mat-checkbox>
-        </mat-form-field>
+        <mat-checkbox formControlName="npPost">
+          Відділення Нової Пошти
+        </mat-checkbox>
+      </div>
+      <div>
+        <mat-checkbox formControlName="npCourier">
+          Кур'єрська доставка Новою Поштою
+        </mat-checkbox>
+      </div>
+      <div>
+        <mat-checkbox formControlName="ukrPost">
+          Відділення Укр Пошти
+        </mat-checkbox>
       </div>
       <div>
         <mat-form-field>
-          <mat-checkbox formControlName="npCourier">
-            Кур'єрська доставка Новою Поштою
-          </mat-checkbox>
-        </mat-form-field>
-      </div>
-      <div>
-        <mat-form-field>
-          <mat-checkbox formControlName="ukrPost">
-            Відділення Укр Пошти
-          </mat-checkbox>
+          <mat-label>Відділення</mat-label>
+          <mat-select>
+            <mat-option></mat-option>
+          </mat-select>
         </mat-form-field>
       </div>
     </div>
