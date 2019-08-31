@@ -139,16 +139,6 @@
 
               <form *ngSwitchCase="DeliveryMethods.NovaPoshta" [formGroup]="novaPoshtaForm" class="novaPoshtaForm">
 
-                <!-- #region Area Selector-->
-                <mat-form-field *ngIf="false">
-                  <mat-select formControlName="area" [placeholder]="'order.caption.area' | translate">
-                    <mat-option *ngFor="let area of areas" [value]="area.Ref">
-                      {{area.Description | translate }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <!-- #endregion -->
-
                 <!-- #region City Selector-->
                 <mat-form-field>
                   <input [placeholder]="'order.caption.city' | translate" matInput formControlName="city" [matAutocomplete]="cityAutocomplete">

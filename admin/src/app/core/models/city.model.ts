@@ -23,4 +23,12 @@ export class City {
   toString() {
     return `${this.SettlementTypeDescription} ${this.Description}`.trim();
   }
+
+  valueOf() {
+    return this.toString();
+  }
+
+  toJSON() {
+    return this.toString();
+  }
 }

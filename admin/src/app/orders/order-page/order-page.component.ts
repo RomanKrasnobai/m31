@@ -1,6 +1,6 @@
 import { DeliveryMethod } from './../delivery-info.model';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormArray, AbstractControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray, ValidatorFn } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
@@ -12,10 +12,9 @@ import { Order } from '../order.model';
 import { OrdersService } from '../orders.service';
 import { AppService } from 'src/app/app.service';
 import { PaymentMethod } from '../payment-method.enum';
-import { NovaPoshtaService } from 'src/app/core/nova_poshta.service';
-import { Area } from 'src/app/core/models/area.model';
+import { NovaPoshtaService } from 'src/app/core/nova-poshta.service';
 import { City } from 'src/app/core/models/city.model';
-import { Warehouse } from 'src/app/core/warehouse.model';
+import { Warehouse } from 'src/app/core/models/warehouse.model';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 
@@ -27,7 +26,6 @@ import { Observable } from 'rxjs';
 export class OrderPageComponent implements OnInit {
 
   // #region Fields: Public
-  saveButtonDisabled: boolean;
   env = environment;
 
   textareaStyle = {
@@ -59,7 +57,6 @@ export class OrderPageComponent implements OnInit {
   form: FormGroup;
   novaPoshtaForm: FormGroup;
   id: string;
-  areas: Area[];
   cities: City[];
   warehouses: Warehouse[];
   DeliveryMethods = DeliveryMethod;
@@ -70,10 +67,15 @@ export class OrderPageComponent implements OnInit {
   private entity: Order;
   private mobileQuery: MediaQueryList;
   private mobileQueryListener: (ev: MediaQueryListEvent) => void;
+  private saveButtonSubmitted: boolean;
 
   // #region Accessors: Public
   get saveButtonEnabled(): boolean {
-    return this.form && this.form.valid;
+    return !this.saveButtonSubmitted && this.form && this.form.valid;
+  }
+
+  get saveButtonDisabled(): boolean {
+    return !this.saveButtonEnabled;
   }
 
   public get isMobile(): boolean {
@@ -102,14 +104,21 @@ export class OrderPageComponent implements OnInit {
     return paymentMethod === PaymentMethod.PbCard;
   }
 
+  get deliveryInfoForm(): FormGroup {
+    return this.form && this.form.get('deliveryInfo') as FormGroup;
+  }
+
   get deliveryMethod(): DeliveryMethod {
-    const deliveryInfoForm = this.form && this.form.get('deliveryInfo');
-    const deliveryMethod = deliveryInfoForm && deliveryInfoForm.get('method').value as DeliveryMethod;
+    const deliveryMethod = this.deliveryInfoForm && this.deliveryInfoForm.get('method').value as DeliveryMethod;
     return deliveryMethod;
   }
 
+  get cartFormArray(): FormArray {
+    return this.form && this.form.get('cart') as FormArray;
+  }
+
   get cartControls(): FormGroup[] {
-    return this.form && (this.form.get('cart') as FormArray).controls as FormGroup[];
+    return this.cartFormArray && this.cartFormArray.controls as FormGroup[];
   }
 
   get orderItemsDisplayedColumns(): any[] {
@@ -203,7 +212,7 @@ export class OrderPageComponent implements OnInit {
   }
 
   appendCartItemControl() {
-    this.cartControls.push(this.getItemControlGroup());
+    this.cartFormArray.push(this.getItemControlGroup());
   }
 
   removeCartItem(index: number) {
@@ -230,31 +239,58 @@ export class OrderPageComponent implements OnInit {
         email: null,
         address: null,
       }, [Validators.required]),
-      cart: fb.array([], [Validators.required]),
+      cart: fb.array([], this.getCartValidator()),
       deliveryInfo: fb.group({
         method: [null, [Validators.required]],
-        info: [null, [Validators.required]],
+        info: [null, [this.getDeliveryInfoValidator()]],
         date: [new Date(), [Validators.required]],
-      }, [Validators.required]),
-      paymentMethod: [PaymentMethod.PbCard, [Validators.required]]
+      }, { validators: this.getDeliveryInfoFormValidator() }),
+      paymentMethod: [null, [Validators.required]]
     });
     this.novaPoshtaForm = fb.group({
-      area: [null, [Validators.required]],
       city: [null, [Validators.required]],
-      warehouse: [null, [Validators.required]],
-      warehouseId: null,
+      warehouse: [null, [Validators.required]]
     });
     this.setNovaPoshtaFormEventsHandlers();
   }
 
+  private getCartValidator(): ValidatorFn {
+    const validator = control => {
+      const formArray = control as FormArray;
+      const valid = formArray.controls.length > 0 && formArray.controls.every(c => c.valid);
+      return valid ? null : { required: true };
+    };
+    return validator;
+  }
+
+  private getDeliveryInfoFormValidator(): ValidatorFn {
+    return control => {
+      const formGroup = control as FormGroup;
+      const valid = formGroup.valid;
+      return valid ? null : { required: true };
+    };
+  }
+
+  private getDeliveryInfoValidator(): ValidatorFn {
+    return control => {
+      let errors = null;
+      if (this.deliveryMethod === DeliveryMethod.NovaPoshta) {
+        errors = control.value && control.value.warehouse ? null : { required: true };
+      }
+      return errors;
+    };
+  }
+
   private getItemControlGroup(values?) {
-    return this.formBuilder.group({
+    const form = this.formBuilder.group({
       item: [null, [Validators.required]],
       qty: [1, [Validators.min(1), Validators.required]]
     });
+    return form;
   }
 
   private setNovaPoshtaFormEventsHandlers() {
+    this.novaPoshtaForm.valueChanges.subscribe(info => this.deliveryInfoForm.patchValue({ info }));
     this.form.get('deliveryInfo').get('method').valueChanges.pipe(
       filter(() => this.deliveryMethod === this.DeliveryMethods.NovaPoshta && !this.cities)
     ).subscribe(() => {
@@ -263,21 +299,9 @@ export class OrderPageComponent implements OnInit {
     });
   }
 
-  private loadAreas() {
+  private loadCities() {
     this.loading = true;
-    this.novaPoshtaService.getAreas().subscribe(areas => {
-      this.areas = areas;
-      this.novaPoshtaForm.patchValue({ city: null });
-      this.loading = false;
-    }, e => {
-      this.loading = false;
-      throw e;
-    });
-  }
-
-  private loadCities(areaRef?: string) {
-    this.loading = true;
-    this.novaPoshtaService.getCities(areaRef)
+    this.novaPoshtaService.getCities()
     .pipe(
       map(
         data => data.map(
@@ -333,13 +357,12 @@ export class OrderPageComponent implements OnInit {
   }
 
   private save() {
-    console.log(this.form.getRawValue());
     if (this.form.invalid) {
       return;
     }
     const dto = Object.assign({}, this.entity, this.form.value);
     this.loading = true;
-    this.saveButtonDisabled = true;
+    this.saveButtonSubmitted = true;
     const query = this.id
       ? this.ordersService.update(this.id, dto)
       : this.ordersService.create(dto).pipe(
@@ -348,7 +371,7 @@ export class OrderPageComponent implements OnInit {
         })
       );
     const subscribeFn = () => {
-      this.saveButtonDisabled = false;
+      this.saveButtonSubmitted = false;
       this.loading = false;
     };
     query.subscribe(subscribeFn, subscribeFn);

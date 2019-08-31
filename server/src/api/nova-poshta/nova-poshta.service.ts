@@ -27,10 +27,14 @@ export class NovaPoshtaService {
 
   private readonly apiUrl: string = 'https://api.novaposhta.ua/v2.0/json';
   private readonly apiKey: string = '5207dd326f06b72edcb97013216d480c';
+  private readonly useDatabase = false;
 
   constructor(private readonly httpService: HttpService, private firebaseSvc: FirebaseService) {}
 
   getAreas(): Observable<Area[]> {
+    if (!this.useDatabase) {
+      return this.callApi<Area[]>('Address', 'getAreas', {});
+    }
     const docRef = this.getDocRef('areas');
     return this.syncAreas()
     .pipe(
@@ -42,6 +46,9 @@ export class NovaPoshtaService {
   }
 
   getCities(areaRef: string): Observable<City[]> {
+    if (!this.useDatabase) {
+      return this.callApi<City[]>('Address', 'getCities', {});
+    }
     const docRef = this.getDocRef('cities');
     const collectionRef = docRef.collection('data');
     return this.syncCities()
@@ -76,6 +83,9 @@ export class NovaPoshtaService {
   }
 
   getWarehouses(cityRef: string): Observable<Warehouse[]> {
+    if (!this.useDatabase) {
+      return this.callApi<Warehouse[]>('AddressGeneral', 'getWarehouses', { CityRef: cityRef });
+    }
     const docRef = this.getDocRef('warehouses');
     const collectionRef = docRef.collection('data');
     return this.syncWarehouses()

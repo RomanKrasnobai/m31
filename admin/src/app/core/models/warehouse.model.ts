@@ -46,4 +46,12 @@ export class Warehouse {
   toString() {
     return `${this.Description}`.trim();
   }
+
+  valueOf() {
+    return this.Number;
+  }
+
+  toJSON() {
+    return this.Number;
+  }
 }
