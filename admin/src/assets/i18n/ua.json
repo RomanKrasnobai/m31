@@ -38,6 +38,10 @@
   "order.page.group-title.payment": "Оплата",
   "order.page.title": "Замовлення",
   "orders.list.title": "Замовлення",
+  "order.caption.number": "Номер замовленя",
+  "order.caption.date": "Дата",
+  "order.caption.status": "Статус",
+  "order.caption.name": "Клієнт",
   "order.caption.first-name": "Ім'я",
   "order.caption.last-name": "Прізвище",
   "order.caption.phone": "Телефон",
@@ -58,5 +62,14 @@
   "order.payment-method.cash": "Готівкою",
   "order.payment-method.private_bank_card": "На карту Приватбанку",
   "order.delivery-method.nova-poshta": "Нова Пошта",
-  "order.delivery-method.pickup": "Самовивіз"
+  "order.delivery-method.pickup": "Самовивіз",
+  "orders.enums.status.0": "Нова",
+  "orders.enums.status.1": "В роботі",
+  "orders.enums.status.2": "Доставляється",
+  "orders.enums.status.3": "Закрито",
+  "orders.enums.status.4": "Скасовано",
+  "order.action.in-progress": "В роботу",
+  "order.action.delivering": "Доставка",
+  "order.action.close": "Закрити",
+  "order.action.cancel": "Відміна"
 }

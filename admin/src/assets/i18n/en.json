@@ -38,6 +38,10 @@
   "order.page.group-title.payment": "Payment",
   "order.page.title": "Order",
   "orders.list.title": "Orders",
+  "order.caption.number": "order number",
+  "order.caption.date": "Date",
+  "order.caption.status": "Status",
+  "order.caption.name": "Customer",
   "order.caption.first-name": "First Name",
   "order.caption.last-name": "Last Name",
   "order.caption.phone": "Phone",
@@ -58,5 +62,14 @@
   "order.payment-method.cash": "Cash",
   "order.payment-method.private_bank_card": "Private Bank",
   "order.delivery-method.nova-poshta": "Nova poshta",
-  "order.delivery-method.pickup": "Pickup"
+  "order.delivery-method.pickup": "Pickup",
+  "orders.enums.status.0": "New",
+  "orders.enums.status.1": "In progress",
+  "orders.enums.status.2": "Delivering",
+  "orders.enums.status.3": "Closed",
+  "orders.enums.status.4": "Canceled",
+  "order.action.in-progress": "In Progress",
+  "order.action.delivering": "Delivering",
+  "order.action.close": "Close",
+  "order.action.cancel": "Cancel"
 }

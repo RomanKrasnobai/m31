@@ -208,6 +208,11 @@
   </mat-card-content>
   <mat-card-actions>
     <mat-action-row>
+      <button mat-raised-button color="primary" *ngIf="inProgressButtonVisible" (click)="onInProgressButtonClick()">{{ 'order.action.in-progress' | translate }}</button>
+      <button mat-raised-button color="primary" *ngIf="deliveringButtonVisible" (click)="onDeliveringButtonClick()">{{ 'order.action.delivering' | translate }}</button>
+      <button mat-raised-button color="primary" *ngIf="closeButtonVisible" (click)="onCloseButtonClick()">{{ 'order.action.close' | translate }}</button>
+      <button mat-raised-button color="secondary" *ngIf="cancelButtonVisible" (click)="onCancelButtonClick()">{{ 'order.action.cancel' | translate }}</button>
+      <div class="spacer" spacer></div>
       <button mat-button color="primary" (click)="onBackButtonClick()">{{ 'common.back-button' | translate }}</button>
       <button mat-raised-button color="primary" [disabled]="saveButtonDisabled"
         (click)="onSaveButtonClick()">{{ 'common.save-button' | translate }}</button>

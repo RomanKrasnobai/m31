@@ -11,6 +11,7 @@ import {
   AlertDialogButtonColor,
   AlertDialogData
 } from 'src/app/core/alert-dialog/alert-dialog.component';
+import { Customer } from '../customer.model';
 
 @Component({
   selector: 'app-order-list',
@@ -23,7 +24,7 @@ export class OrderListComponent implements OnInit {
 
   dataSource: MatTableDataSource<Order>;
   saveButtonHidden: boolean;
-  displayedColumns: Array<string> = ['menu'];
+  displayedColumns: Array<string> = ['number', 'date', 'status', 'customerName', 'customerPhone', 'menu'];
 
   get loading(): boolean {
     return this.appService.loading$.getValue();
@@ -98,6 +99,15 @@ export class OrderListComponent implements OnInit {
         this.remove(order);
       }
     });
+  }
+
+  getDate(src: { seconds: number}): Date {
+    return src ? new Date(src.seconds) : null;
+  }
+
+  getCustomerName(customer: Customer): string {
+    const { firstName, lastName } = customer;
+    return `${firstName || ''} ${lastName || ''}`.trim();
   }
 
   private remove(order: Order) {
