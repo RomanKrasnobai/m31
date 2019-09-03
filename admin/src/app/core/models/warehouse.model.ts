@@ -51,7 +51,4 @@ export class Warehouse {
     return this.Number;
   }
 
-  toJSON() {
-    return this.Number;
-  }
 }

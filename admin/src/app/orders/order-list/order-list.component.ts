@@ -101,8 +101,13 @@ export class OrderListComponent implements OnInit {
     });
   }
 
-  getDate(src: { seconds: number}): Date {
-    return src ? new Date(src.seconds) : null;
+  getDate(src: any): Date {
+    if (src && src.seconds) {
+      return new Date(src.seconds);
+    } else if (src && src.constructor === String) {
+      return new Date(Date.parse(src));
+    }
+    return null;
   }
 
   getCustomerName(customer: Customer): string {

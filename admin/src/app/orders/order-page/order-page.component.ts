@@ -414,6 +414,7 @@ export class OrderPageComponent implements OnInit {
         this.entity = entity;
         this.form.patchValue(entity);
         this.setCartFormValues(entity);
+        this.setNPFormValues(entity);
         this.loading = false;
       });
   }
@@ -426,6 +427,15 @@ export class OrderPageComponent implements OnInit {
       const formGroup = this.getItemControlGroup(element);
       this.cartFormArray.push(formGroup);
     });
+  }
+
+  private setNPFormValues(entity: Order) {
+    if (entity.deliveryInfo.method === DeliveryMethod.NovaPoshta) {
+      const info = entity.deliveryInfo.info;
+      const warehouse = Object.assign(new Warehouse(), info.warehouse);
+      info.warehouse = warehouse;
+      this.novaPoshtaForm.patchValue(info);
+    }
   }
 
   private save() {
