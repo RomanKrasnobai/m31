@@ -264,21 +264,23 @@ export class OrderPageComponent implements OnInit {
   }
 
   private getDeliveryInfoFormValidator(): ValidatorFn {
-    return control => {
+    const validator = control => {
       const formGroup = control as FormGroup;
       const valid = formGroup.valid;
       return valid ? null : { required: true };
     };
+    return validator;
   }
 
   private getDeliveryInfoValidator(): ValidatorFn {
-    return control => {
+    const validator = control => {
       let errors = null;
       if (this.deliveryMethod === DeliveryMethod.NovaPoshta) {
         errors = control.value && control.value.warehouse ? null : { required: true };
       }
       return errors;
     };
+    return validator;
   }
 
   private getItemControlGroup(values?) {
