@@ -17,6 +17,9 @@ import { City } from 'src/app/core/models/city.model';
 import { Warehouse } from 'src/app/core/models/warehouse.model';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
+import { Cart } from '../cart.model';
+import { OrderItem } from '../order-item.model';
+import { OrderStatus } from '../order-status.enum';
 
 @Component({
   selector: 'app-order-page',
@@ -134,6 +137,35 @@ export class OrderPageComponent implements OnInit {
       'name'
     ].join(';');
   }
+
+  get status(): OrderStatus {
+    const entityStatus = this.entity && this.entity.status;
+    const formStatus = this.form && +this.form.get('status').value as OrderStatus;
+    return formStatus === null ? entityStatus : formStatus;
+  }
+
+  get inProgressButtonVisible(): boolean {
+    return !!this.id && [
+      OrderStatus.InProgress,
+      OrderStatus.Delivering,
+      OrderStatus.Closed,
+      OrderStatus.Canceled
+    ].indexOf(this.status) === -1;
+  }
+  get deliveringButtonVisible(): boolean {
+    return this.status === OrderStatus.InProgress;
+  }
+
+  get closeButtonVisible(): boolean {
+    return this.status === OrderStatus.Delivering;
+  }
+
+  get cancelButtonVisible(): boolean {
+    return !!this.id && [
+      OrderStatus.Closed,
+      OrderStatus.Canceled
+    ].indexOf(this.status) === -1;
+  }
   // #endregion
 
   constructor(
@@ -229,9 +261,32 @@ export class OrderPageComponent implements OnInit {
     // TODO: Display Warehouse information
   }
 
+  onInProgressButtonClick() {
+    this.form.patchValue({ status: OrderStatus.InProgress });
+    this.save();
+  }
+
+  onDeliveringButtonClick() {
+    this.form.patchValue({ status: OrderStatus.Delivering });
+    this.save();
+  }
+
+  onCloseButtonClick() {
+    this.form.patchValue({ status: OrderStatus.Closed });
+    this.save();
+  }
+
+  onCancelButtonClick() {
+    this.form.patchValue({ status: OrderStatus.Canceled });
+    this.save();
+  }
+
   private initForms() {
     const fb = this.formBuilder;
     this.form = fb.group({
+      number: [null],
+      date: [new Date()],
+      status: [OrderStatus.New],
       customer: fb.group({
         firstName: [null, [Validators.required]],
         lastName: [null, [Validators.required]],
@@ -281,10 +336,12 @@ export class OrderPageComponent implements OnInit {
     };
   }
 
-  private getItemControlGroup(values?) {
+  private getItemControlGroup(values?: any) {
+    const itemValue = values && values.item || null;
+    const itemQty = values && values.qty || null;
     const form = this.formBuilder.group({
-      item: [null, [Validators.required]],
-      qty: [1, [Validators.min(1), Validators.required]]
+      item: [itemValue, [Validators.required]],
+      qty: [itemQty, [Validators.min(1), Validators.required]]
     });
     return form;
   }
@@ -299,8 +356,10 @@ export class OrderPageComponent implements OnInit {
     });
   }
 
-  private loadCities() {
-    this.loading = true;
+  private loadCities(background?: boolean) {
+    if (!background) {
+      this.loading = true;
+    }
     this.novaPoshtaService.getCities()
     .pipe(
       map(
@@ -352,8 +411,19 @@ export class OrderPageComponent implements OnInit {
       .subscribe(entity => {
         this.entity = entity;
         this.form.patchValue(entity);
+        this.setCartFormValues(entity);
         this.loading = false;
       });
+  }
+
+  private setCartFormValues(entity: Order) {
+    if (!entity || !Array.isArray(entity.cart)) {
+      return;
+    }
+    entity.cart.forEach(element => {
+      const formGroup = this.getItemControlGroup(element);
+      this.cartFormArray.push(formGroup);
+    });
   }
 
   private save() {

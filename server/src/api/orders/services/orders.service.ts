@@ -5,6 +5,7 @@ import { Guid } from 'guid-typescript';
 
 import { FirebaseService } from '../../../firebase/firebase.service';
 import { OrderDto } from '../dto/order.dto';
+import { OrderStatus } from '../dto/order-status.dto';
 
 @Injectable()
 export class OrdersService {
@@ -36,6 +37,9 @@ export class OrdersService {
 
   create(dto: OrderDto): Observable<OrderDto> {
     const id = Guid.create().toString();
+    dto.date = new Date();
+    dto.status = OrderStatus.New;
+    dto.number = new Date().valueOf().toString();
     return from(
       this.collection.doc(id).set(dto),
     ).pipe(map(x => ({ id, ...dto })));
