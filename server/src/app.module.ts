@@ -10,6 +10,7 @@ import { NovaPoshtaModule } from './api/nova-poshta/nova-poshta.module';
 import { FirebaseModule } from './firebase/firebase.module';
 import { TranslatesModule } from './api/translates/translates.module';
 import { CategoriesModule } from './api/categories/categories.module';
+import { AuthModule } from './auth/auth.module';
 
 const modules = [
   ItemsModule,
@@ -29,6 +30,7 @@ const routes: Routes = modules.map(module => ({
     RouterModule.forRoutes(routes),
     ...modules,
     FirebaseModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -13,7 +13,7 @@ import { ItemCategoryService } from './items/item-category.service';
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
   ],
   imports: [
     BrowserModule,

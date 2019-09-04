@@ -1,0 +1,16 @@
+<div *ngIf="!loggedId; else profile">
+  <mat-form-field>
+    <input matInput placeholder="E-Mail" type="email" required [(ngModel)]="email">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Password" type="password" required [(ngModel)]="password">
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="login()">Login</button>
+</div>
+<ng-template #profile>
+  <div>
+    <p>{{userUid}}</p>
+    <p>{{creationTime}}</p>
+    <p>{{token}}</p>
+  </div>
+</ng-template>

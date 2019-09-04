@@ -20,6 +20,7 @@ export class AppComponent implements OnDestroy{
     { title: 'common.menu.orders', path: 'orders' },
     { title: 'common.menu.categories', path: 'categories' },
     // { title: 'common.menu.translates', path: 'translates' },
+    { title: 'common.menu.auth', path: 'auth' },
   ];
   langs: Array<{ title: string, value: string }> = [
     { title: 'UA', value: 'ua' },

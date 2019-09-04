@@ -7,6 +7,7 @@
   "common.menu.orders": "Orders",
   "common.menu.categories": "Categories",
   "common.menu.translates": "Translates",
+  "common.menu.auth": "Authenticate",
   "common.menu.edit": "Edit",
   "common.menu.remove": "Remove",
   "common.caption.actions": "Actions",

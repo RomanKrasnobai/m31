@@ -8,6 +8,7 @@ const routes: Routes = [
   { path: 'items', loadChildren: './items/items.module#ItemsModule' },
   { path: 'orders', loadChildren: './orders/orders.module#OrdersModule' },
   { path: 'categories', loadChildren: './categories/categories.module#CategoriesModule' },
+  { path: 'auth', loadChildren: './auth/auth.module#AuthModule' },
 ];
 
 @NgModule({
