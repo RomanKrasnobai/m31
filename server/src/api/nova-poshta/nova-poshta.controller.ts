@@ -1,12 +1,13 @@
 import { Area } from './dto/area.dto';
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Query, HttpException } from '@nestjs/common';
 import { ApiUseTags, ApiOperation } from '@nestjs/swagger';
-import { Observable } from 'rxjs';
+import { Observable, of as observableOf, throwError } from 'rxjs';
 import { NovaPoshtaService } from './nova-poshta.service';
 import { Settlement } from './dto/settlement.dto';
 import { City } from './dto/city.dto';
 import { Warehouse } from './dto/warehouse.dto';
 import { Street } from './dto/street.dto';
+import { catchError } from 'rxjs/operators';
 
 // API Адреса https://devcenter.novaposhta.ua/docs/services/556d7ccaa0fe4f08e8f7ce43/operations/58e5ebeceea27017bc851d67
 // https://devcenter.novaposhta.ua/docs/services/556d7ccaa0fe4f08e8f7ce43/operations/{operationId}
@@ -28,7 +29,10 @@ export class NovaPoshtaController {
   })
   @Get('areas')
   getAreas(): Observable<Area[]> {
-    return this.svc.getAreas();
+    return this.svc.getAreas()
+      .pipe(
+        catchError(err => throwError(new HttpException(err, 500))),
+      );
   }
 
   @ApiOperation({
@@ -43,7 +47,10 @@ export class NovaPoshtaController {
   })
   @Get('cities')
   getCities(@Query('areaRef') areaRef: string): Observable<City[]> {
-    return this.svc.getCities(areaRef);
+    return this.svc.getCities(areaRef)
+      .pipe(
+        catchError(err => throwError(new HttpException(err, 500))),
+      );
   }
 
   @ApiOperation({
@@ -59,7 +66,10 @@ export class NovaPoshtaController {
   })
   @Get('settlements')
   getSettlements(@Query('areaRef') areaRef: string, @Query('regionRef') regionRef: string): Observable<Settlement[]> {
-    return this.svc.getSettlements(areaRef, regionRef);
+    return this.svc.getSettlements(areaRef, regionRef)
+      .pipe(
+        catchError(err => throwError(new HttpException(err, 500))),
+      );
   }
 
   @ApiOperation({
@@ -71,7 +81,10 @@ export class NovaPoshtaController {
   })
   @Get('searchSettlements')
   searchSettlements(@Query('cityName') cityName: string, @Query('limit') limit: string): Observable<Settlement[]> {
-    return this.svc.searchSettlements(cityName, Number.parseInt(limit));
+    return this.svc.searchSettlements(cityName, Number.parseInt(limit))
+      .pipe(
+        catchError(err => throwError(new HttpException(err, 500))),
+      );
   }
 
   @ApiOperation({
@@ -84,7 +97,10 @@ export class NovaPoshtaController {
   @Get('searchSettlements')
   searchSettlementStreets(
     @Query('settlementRef') settlementRef: string, @Query('streetName') streetName: string, @Query('limit') limit: string): Observable<Street[]> {
-    return this.svc.searchSettlementStreets(settlementRef, streetName, Number.parseInt(limit));
+    return this.svc.searchSettlementStreets(settlementRef, streetName, Number.parseInt(limit))
+      .pipe(
+        catchError(err => throwError(new HttpException(err, 500))),
+      );
   }
 
   @ApiOperation({
@@ -96,6 +112,9 @@ export class NovaPoshtaController {
   })
   @Get('warehouses')
   getWarehouses(@Query('cityRef') cityRef: string): Observable<Warehouse[]> {
-    return this.svc.getWarehouses(cityRef);
+    return this.svc.getWarehouses(cityRef)
+      .pipe(
+        catchError(err => throwError(new HttpException(err, 500))),
+      );
   }
 }

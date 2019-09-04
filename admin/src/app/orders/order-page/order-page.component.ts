@@ -152,6 +152,7 @@ export class OrderPageComponent implements OnInit {
       OrderStatus.Canceled
     ].indexOf(this.status) === -1;
   }
+
   get deliveringButtonVisible(): boolean {
     return this.status === OrderStatus.InProgress;
   }
@@ -208,11 +209,21 @@ export class OrderPageComponent implements OnInit {
   }
 
   getFilteredCities(inputCity): City[] {
+    if (!inputCity || inputCity.constructor !== String) {
+      return [];
+    }
+    const inputCityLc = inputCity.toLowerCase().trim();
     const reqExp = new RegExp(inputCity, 'i');
     return this.cities
       .filter(
         city => reqExp.test(city.Description) || reqExp.test(city.DescriptionRu)
-    );
+      )
+      .map(city => ({
+        equal: city.Description.toLowerCase() === inputCityLc || city.DescriptionRu.toLowerCase() === inputCityLc,
+        city
+      }))
+      .sort((a, b) => a.equal === b.equal ? 1 : -1)
+      .map(x => x.city);
   }
 
   getWarehousesStream(): Observable<Warehouse[]> {
@@ -222,6 +233,9 @@ export class OrderPageComponent implements OnInit {
   }
 
   getFilteredWarehouses(inputWarehouse): Warehouse[] {
+    if (!inputWarehouse || inputWarehouse.constructor !== String) {
+      return [];
+    }
     const reqExp = new RegExp(inputWarehouse, 'i');
     return this.warehouses
       .filter(
