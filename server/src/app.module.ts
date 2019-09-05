@@ -18,6 +18,7 @@ const modules = [
   NovaPoshtaModule,
   TranslatesModule,
   CategoriesModule,
+  AuthModule,
 ];
 
 const routes: Routes = modules.map(module => ({

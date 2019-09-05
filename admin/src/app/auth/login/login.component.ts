@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -19,12 +20,18 @@ export class LoginComponent implements OnInit {
 
   loggedId = false;
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   ngOnInit() {
   }
 
   login() {
+    this.http.post('api/auth/login', { email: this.email, password: this.password}).subscribe(
+      token => firebase.auth().signInWithCustomToken(token.toString()).then(res => console.log(res))
+    );
+  }
+
+  firebaseLogin() {
     firebase.auth().signInWithEmailAndPassword(this.email, this.password)
     .then(res => {
       const user = res.user;
