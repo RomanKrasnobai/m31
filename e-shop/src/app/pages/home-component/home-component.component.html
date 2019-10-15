@@ -18,7 +18,9 @@
 
     <div class="product-block-wrap">
       <div class="product-block" *ngFor="let product of data">
-        <app-product-item [product]="product"></app-product-item>
+        <app-product-item [product]="product"
+                          [routerLink]="['/product-info', product.id]">
+        </app-product-item>
       </div>
     </div>
   </div>

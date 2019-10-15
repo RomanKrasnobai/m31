@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {OrderBasket} from "../../../models/OrderBasket";
+import {OrderBasket} from '../../../models/OrderBasket';
 
 @Component({
   selector: 'app-product-item',

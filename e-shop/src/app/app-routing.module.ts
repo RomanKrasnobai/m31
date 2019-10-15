@@ -18,10 +18,10 @@ const routes: Routes = [
     path: 'summary',
     loadChildren: './pages/summary-component/summary-component.module#SummaryComponentModule'
   },
-  // {
-  //   path: 'basket-page',
-  //   loadChildren: './pages/basket-component/basket-component.module#BasketComponentModuleModule'
-  // },
+  {
+    path: 'product-info/:id',
+    loadChildren: './pages/product-info/product-info.module#ProductInfoModule'
+  },
   {
     path: '',
     redirectTo: '/home',
