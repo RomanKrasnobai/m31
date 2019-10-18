@@ -21,6 +21,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               private dialog: MatDialog) { }
 
   ngOnInit() {
+    // test
     this.itemsService.getAll().pipe(
       takeUntil(this.ngOnDestroy$),
       tap(items => {
