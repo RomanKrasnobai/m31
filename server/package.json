@@ -37,7 +37,7 @@
     "@nestjs/swagger": "^3.0.2",
     "body-parser": "^1.19.0",
     "firebase": "^6.1.0",
-    "firebase-admin": "^8.4.0",
+    "firebase-admin": "^11.4.1",
     "firebase-functions": "^3.0.2",
     "guid-typescript": "^1.0.9",
     "nest-router": "^1.0.9",
